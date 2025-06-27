@@ -4,9 +4,12 @@ struct ItalicNode {
 
 struct ItalicFeature {}
 
-pub fn (f ItalicFeature) init(mut registry Registry) {
-	registry.register_inline_parser(f.parse_inline)
-	registry.register_renderer('ItalicNode', f.render)
+pub fn (f ItalicFeature) node_name() string {
+	return 'ItalicNode'
+}
+
+pub fn (f ItalicFeature) paragraph_stop_condition(tokens []Token, position int) ?bool {
+	return none
 }
 
 // No block handling

@@ -2,8 +2,14 @@ import os
 
 fn main() {
 	mut features := []Feature{}
+
+	// BEGIN ENABLED FEATURES
 	features << BoldFeature{}
 	features << ItalicFeature{}
+	features << MathDisplayFeature{}
+	features << MathInlineFeature{}
+	// END ENABLED FEATURES
+
 	cfg := Config{
 		features: features
 	}
@@ -13,19 +19,6 @@ fn main() {
 	// Register parsers and renderer
 	for feat in cfg.features {
 		feat.init(mut registry)
-	}
-
-	// Add paragraph and text renderers
-	registry.renderers['Paragraph'] = fn (node Node, renderer HTMLRenderer) string {
-		paragraph := node as Paragraph
-		mut result := ''
-		for child in paragraph.content {
-			result += renderer.render_node(child as Node)
-		}
-		return '<p>${result}</p>'
-	}
-	registry.renderers['TextNode'] = fn (node Node, renderer HTMLRenderer) string {
-		return (node as TextNode).text
 	}
 
 	mut parse := Parser.new(registry)

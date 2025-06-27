@@ -1,15 +1,9 @@
 struct Parser {
-	block_parsers  []BlockParser
-	inline_parsers []InlineParser
-	reg            &Registry
+	reg &Registry
 }
 
-type BlockParser = fn ([]Token, int, &Registry) ?(Node, int)
-
-type InlineParser = fn ([]Token, int, &Registry) ?(InlineNode, int)
-
 pub fn Parser.new(reg &Registry) Parser {
-	return Parser{reg.block_parsers, reg.inline_parsers, reg}
+	return Parser{reg}
 }
 
 pub fn (p Parser) parse(tokens []Token) Node {
@@ -18,7 +12,7 @@ pub fn (p Parser) parse(tokens []Token) Node {
 
 	for i < tokens.len {
 		mut matched := false
-		for block_fn in p.block_parsers {
+		for block_fn in p.reg.block_parsers {
 			node, consumed := block_fn(tokens, i, p.reg) or { continue }
 			children << node
 			i += consumed
@@ -27,9 +21,14 @@ pub fn (p Parser) parse(tokens []Token) Node {
 		}
 
 		if !matched {
-			// fallback: gather text until newline
+			// fallback: create a paragraph
 			start := i
-			for i < tokens.len && tokens[i].kind != .newline {
+			advance: for i < tokens.len {
+				for condition in p.reg.paragraph_stop_conditions {
+					if condition(tokens, i) or { false } {
+						break advance
+					}
+				}
 				i++
 			}
 			line_tokens := tokens[start..i]
@@ -40,6 +39,11 @@ pub fn (p Parser) parse(tokens []Token) Node {
 			if i < tokens.len && tokens[i].kind == .newline {
 				i++ // skip newline
 			}
+		}
+
+		// Skip enmpty lines
+		for i < tokens.len && tokens[i].kind == .newline {
+			i++
 		}
 	}
 
@@ -54,17 +58,21 @@ pub fn (p Parser) parse_inlines(tokens []Token) []InlineNode {
 
 	for i < tokens.len {
 		mut matched := false
-		for inline_fn in p.inline_parsers {
+		for inline_fn in p.reg.inline_parsers {
 			node, consumed := inline_fn(tokens, i, p.reg) or { continue }
 			result << node
 			i += consumed
 			matched = true
 			break
 		}
+
+		// fallback: accumulate as text
 		if !matched {
-			// fallback: accumulate as text
-			result << TextNode{
-				text: tokens[i].lit
+			// Avoid adding newlines into the ast
+			if tokens[i].kind != .newline {
+				result << TextNode{
+					text: tokens[i].lit
+				}
 			}
 			i++
 		}

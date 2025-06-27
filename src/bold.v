@@ -4,9 +4,12 @@ struct BoldNode {
 
 struct BoldFeature {}
 
-pub fn (f BoldFeature) init(mut registry Registry) {
-	registry.register_inline_parser(f.parse_inline)
-	registry.register_renderer('BoldNode', f.render)
+pub fn (f BoldFeature) node_name() string {
+	return 'BoldNode'
+}
+
+pub fn (f BoldFeature) paragraph_stop_condition(tokens []Token, position int) ?bool {
+	return none
 }
 
 // No block handling

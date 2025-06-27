@@ -6,8 +6,10 @@ pub struct Token {
 enum TokenKind {
 	text
 	newline
+	space
 	star
 	underscore
+	dollar
 	hash
 	percent
 	curly_open
@@ -20,8 +22,10 @@ fn tokenize(input string) []Token {
 
 	rune_to_token_kind := {
 		`\n`: TokenKind.newline
+		` `:  TokenKind.space
 		`*`:  TokenKind.star
 		`_`:  TokenKind.underscore
+		`$`:  TokenKind.dollar
 		`#`:  TokenKind.hash
 		`%`:  TokenKind.percent
 		`{`:  TokenKind.curly_open
