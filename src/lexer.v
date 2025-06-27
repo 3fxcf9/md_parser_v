@@ -14,6 +14,7 @@ enum TokenKind {
 	dollar
 	hash
 	percent
+	tilde
 	curly_open
 	curly_close
 }
@@ -32,6 +33,7 @@ fn tokenize(input string) []Token {
 		`$`:  TokenKind.dollar
 		`#`:  TokenKind.hash
 		`%`:  TokenKind.percent
+		`~`:  TokenKind.tilde
 		`{`:  TokenKind.curly_open
 		`}`:  TokenKind.curly_close
 	}

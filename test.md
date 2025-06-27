@@ -1,5 +1,5 @@
 Normal text and **bold _and italic_** text with ==a bit== of $raw *maths*$.
-A second line in the same paragraph.
+A second line in the same paragraph. After **this**~is a nbsp.
 
 $$
     some display maths using \LaTeX

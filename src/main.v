@@ -14,6 +14,7 @@ fn main() {
 	features << MathInlineFeature{}
 	features << UnderlineFeature{}
 	features << HighlightFeature{}
+	features << NbspFeature{}
 	// END ENABLED FEATURES
 
 	cfg := Config{
@@ -33,9 +34,9 @@ fn main() {
 	input := os.read_file(os.args[1] or { 'test.md' }) or { panic('Missing file') }
 
 	tokens := tokenize(input)
-	dump(tokens)
+	// dump(tokens)
 	document := parse.parse(tokens)
-	dump(document)
+	// dump(document)
 	output := render.render_document(document)
 
 	println(output)
