@@ -1,0 +1,61 @@
+pub struct Token {
+	kind TokenKind
+	lit  string
+}
+
+enum TokenKind {
+	text
+	newline
+	star
+	underscore
+	hash
+	percent
+	curly_open
+	curly_close
+}
+
+fn tokenize(input string) []Token {
+	mut tokens := []Token{}
+	mut current_text := ''
+
+	rune_to_token_kind := {
+		`\n`: TokenKind.newline
+		`*`:  TokenKind.star
+		`_`:  TokenKind.underscore
+		`#`:  TokenKind.hash
+		`%`:  TokenKind.percent
+		`{`:  TokenKind.curly_open
+		`}`:  TokenKind.curly_close
+	}
+
+	for ch in input.runes() {
+		if current_token := rune_to_token_kind[ch] {
+			// Push current text
+			if current_text.len > 0 {
+				tokens << Token{
+					kind: .text
+					lit:  current_text
+				}
+				current_text = ''
+			}
+
+			// Add token
+			tokens << Token{
+				kind: current_token
+				lit:  ch.str()
+			}
+		} else {
+			current_text += ch.str()
+		}
+	}
+
+	// Push remaining text
+	if current_text.len > 0 {
+		tokens << Token{
+			kind: .text
+			lit:  current_text
+		}
+	}
+
+	return tokens
+}

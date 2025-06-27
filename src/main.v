@@ -1,5 +1,8 @@
-module main
+import os
 
 fn main() {
-	println('Hello World!')
+	input := os.read_file(os.args[1] or { 'test.md' }) or { panic('Missing file') }
+
+	tokens := tokenize(input)
+	dump(tokens)
 }
