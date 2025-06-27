@@ -1,5 +1,9 @@
 import os
 
+struct Config {
+	features []Feature
+}
+
 fn main() {
 	mut features := []Feature{}
 
@@ -8,6 +12,8 @@ fn main() {
 	features << ItalicFeature{}
 	features << MathDisplayFeature{}
 	features << MathInlineFeature{}
+	features << UnderlineFeature{}
+	features << HighlightFeature{}
 	// END ENABLED FEATURES
 
 	cfg := Config{

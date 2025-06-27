@@ -8,6 +8,8 @@ enum TokenKind {
 	newline
 	space
 	star
+	equal
+	plus
 	underscore
 	dollar
 	hash
@@ -24,6 +26,8 @@ fn tokenize(input string) []Token {
 		`\n`: TokenKind.newline
 		` `:  TokenKind.space
 		`*`:  TokenKind.star
+		`+`:  TokenKind.plus
+		`=`:  TokenKind.equal
 		`_`:  TokenKind.underscore
 		`$`:  TokenKind.dollar
 		`#`:  TokenKind.hash
