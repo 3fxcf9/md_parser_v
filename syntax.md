@@ -8,7 +8,7 @@ paragraph OK
 *italic* or _italic_ OK
 ++underline++ OK
 ==highlighted== OK
-~~strikethrough~~
+~~strikethrough~~ OK
 
 ~ nbsp OK
 ~: nnbsp
