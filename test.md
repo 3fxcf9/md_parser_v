@@ -1,4 +1,4 @@
-- a first list
+- a first list with ```inline code```
 
 * second list (incompatible bullets)
 

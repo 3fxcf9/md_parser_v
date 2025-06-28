@@ -17,6 +17,7 @@ fn main() {
 	features << LinkFeature{}
 	features << MathDisplayFeature{}
 	features << MathInlineFeature{}
+	features << CodeInlineFeature{}
 	features << NbspFeature{}
 	features << ListFeature{}
 	// END ENABLED FEATURES
@@ -38,13 +39,13 @@ fn main() {
 	input := os.read_file(os.args[1] or { 'test.md' }) or { panic('Missing file') }
 
 	tokens := tokenize(input)
-	for t in tokens {
-		print(t)
-	}
+	// for t in tokens {
+	// 	print(t)
+	// }
 	document := parse.parse(tokens)
-	for n in document {
-		println(n.to_str(0))
-	}
+	// for n in document {
+	// 	println(n.to_str(0))
+	// }
 	output := render.render_document(document)
 
 	println(output)

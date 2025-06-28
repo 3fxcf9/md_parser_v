@@ -19,6 +19,7 @@ enum TokenKind {
 	percent
 	tilde
 	colon
+	backtick
 	lparen
 	rparen
 	lbracket
@@ -85,6 +86,9 @@ pub fn (t Token) str() string {
 		.colon {
 			'${blue}[:]\${reset}'
 		}
+		.backtick {
+			'${blue}[`]\${reset}'
+		}
 		else {
 			'${red}[DELIM:${t.lit}]${reset}'
 		}
@@ -109,6 +113,7 @@ fn tokenize(input string) []Token {
 		`%`:  TokenKind.percent
 		`~`:  TokenKind.tilde
 		`:`:  TokenKind.colon
+		`\``: TokenKind.backtick
 		`(`:  TokenKind.lparen
 		`)`:  TokenKind.rparen
 		`[`:  TokenKind.lbracket

@@ -109,14 +109,14 @@ pub fn (f ListFeature) render(node Node, r HTMLRenderer) string {
 	tag := if list.type == .ordered { 'ol' } else { 'ul' }
 
 	arguments := match true {
-		list.type == .ordered && list.start != 1 { 'start="${list.start}"' }
-		list.type == .dash { 'class="list-dash"' }
-		list.type == .star { 'class="list-star"' }
-		list.type == .plus { 'class="list-plus"' }
+		list.type == .ordered && list.start != 1 { ' start="${list.start}"' }
+		list.type == .dash { ' class="list-dash"' }
+		list.type == .star { ' class="list-star"' }
+		list.type == .plus { ' class="list-plus"' }
 		else { '' }
 	}
 
-	mut out := '<${tag} ${arguments}>\n'
+	mut out := '<${tag}${arguments}>\n'
 	for item in list.items {
 		out += '<li>'
 		for child in item.content {
