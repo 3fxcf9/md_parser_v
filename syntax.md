@@ -1,4 +1,4 @@
-# Heading (can contain ++_formatting_++)
+# Heading (can contain ++_formatting_++) OK
 
 ## Basic syntax
 
@@ -10,10 +10,10 @@ paragraph OK
 ==highlighted== OK
 ~~strikethrough~~ OK
 
-~ nbsp OK
-~: nnbsp
+...~... nbsp OK
+...~:.. nnbsp OK
 
-[link](url)
+[link](url) OK
 ((footnote))
 {{sidenote}}  -> https://scripter.co/sidenotes-using-only-css/ for style inspiration
 

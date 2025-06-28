@@ -11,11 +11,12 @@ fn main() {
 	features << HeadingFeature{}
 	features << BoldFeature{}
 	features << ItalicFeature{}
-	features << MathDisplayFeature{}
-	features << MathInlineFeature{}
 	features << UnderlineFeature{}
 	features << HighlightFeature{}
 	features << StrikethroughFeature{}
+	features << LinkFeature{}
+	features << MathDisplayFeature{}
+	features << MathInlineFeature{}
 	features << NbspFeature{}
 	// END ENABLED FEATURES
 

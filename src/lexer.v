@@ -15,8 +15,13 @@ enum TokenKind {
 	hash
 	percent
 	tilde
-	curly_open
-	curly_close
+	colon
+	lparen
+	rparen
+	lbracket
+	rbracket
+	lcurly
+	rcurly
 }
 
 fn tokenize(input string) []Token {
@@ -34,8 +39,13 @@ fn tokenize(input string) []Token {
 		`#`:  TokenKind.hash
 		`%`:  TokenKind.percent
 		`~`:  TokenKind.tilde
-		`{`:  TokenKind.curly_open
-		`}`:  TokenKind.curly_close
+		`:`:  TokenKind.colon
+		`(`:  TokenKind.lparen
+		`)`:  TokenKind.rparen
+		`[`:  TokenKind.lbracket
+		`]`:  TokenKind.rbracket
+		`{`:  TokenKind.lcurly
+		`}`:  TokenKind.rcurly
 	}
 
 	for ch in input.runes() {

@@ -44,5 +44,5 @@ pub fn (f MathInlineFeature) parse_inline(tokens []Token, position int, reg &Reg
 }
 
 pub fn (f MathInlineFeature) render(node Node, renderer HTMLRenderer) string {
-	return '<inline-math>${(node as MathInlineNode).content}</inline-math>'
+	return '<span class="math-inline">${(node as MathInlineNode).content}</span>'
 }
