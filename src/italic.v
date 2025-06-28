@@ -2,6 +2,14 @@ struct ItalicNode {
 	content []InlineNode
 }
 
+pub fn (n ItalicNode) to_str(indent int) string {
+	mut out := '${' '.repeat(indent)}Italic\n'
+	for inl in n.content {
+		out += inl.to_str(indent + 2)
+	}
+	return out
+}
+
 struct ItalicFeature {}
 
 pub fn (f ItalicFeature) node_name() string {

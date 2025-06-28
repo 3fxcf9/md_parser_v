@@ -18,6 +18,7 @@ fn main() {
 	features << MathDisplayFeature{}
 	features << MathInlineFeature{}
 	features << NbspFeature{}
+	features << ListFeature{}
 	// END ENABLED FEATURES
 
 	cfg := Config{
@@ -34,12 +35,16 @@ fn main() {
 	mut parse := Parser.new(registry)
 	mut render := HTMLRenderer.new(registry)
 
-	input := os.read_file(os.args[1] or { 'syntax.md' }) or { panic('Missing file') }
+	input := os.read_file(os.args[1] or { 'test.md' }) or { panic('Missing file') }
 
 	tokens := tokenize(input)
-	dump(tokens)
+	for t in tokens {
+		print(t)
+	}
 	document := parse.parse(tokens)
-	dump(document)
+	for n in document {
+		println(n.to_str(0))
+	}
 	output := render.render_document(document)
 
 	println(output)

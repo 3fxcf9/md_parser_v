@@ -4,6 +4,14 @@ struct StrikethroughNode {
 	content []InlineNode
 }
 
+pub fn (n StrikethroughNode) to_str(indent int) string {
+	mut out := '${' '.repeat(indent)}Strikethrough\n'
+	for inl in n.content {
+		out += inl.to_str(indent + 2)
+	}
+	return out
+}
+
 struct StrikethroughFeature {}
 
 pub fn (f StrikethroughFeature) node_name() string {

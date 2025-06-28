@@ -35,17 +35,35 @@ display math
 
 ## Lists
 
-- dash
+- dash OK
+  + nested OK
 
-* dot
+* dot OK
 
-+ star
++ star OK
 
 > vartriangleright
 
 -> rightarrow
 
 ~ auto (> then \* then + then -)
+
+
+### Edge-cases
+
+- a first list
+
++ second list (incompatible bullets)
+
+7. ordered list starting at 7
+
+1. No matter what goes next
+
+
+2. Two empty lines ends the list
+
+
+## Hline
 
 === filled hline
 --- dashed hline

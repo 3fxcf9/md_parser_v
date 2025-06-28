@@ -2,6 +2,10 @@ struct MathDisplayNode {
 	content string
 }
 
+pub fn (m MathDisplayNode) to_str(indent int) string {
+	return '${' '.repeat(indent)}DisplayMath(${m.content})\n'
+}
+
 struct MathDisplayFeature {}
 
 pub fn (f MathDisplayFeature) node_name() string {

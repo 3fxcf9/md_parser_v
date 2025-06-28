@@ -2,6 +2,10 @@ struct NbspNode {
 	narrow bool
 }
 
+pub fn (n NbspNode) to_str(indent int) string {
+	return '${' '.repeat(indent)}InlineMath\n'
+}
+
 struct NbspFeature {}
 
 pub fn (f NbspFeature) node_name() string {

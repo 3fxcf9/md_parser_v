@@ -3,6 +3,14 @@ struct LinkNode {
 	content []InlineNode
 }
 
+pub fn (b LinkNode) to_str(indent int) string {
+	mut out := '${' '.repeat(indent)}Link\n'
+	for inl in b.content {
+		out += inl.to_str(indent + 2)
+	}
+	return out
+}
+
 struct LinkFeature {}
 
 pub fn (f LinkFeature) node_name() string {

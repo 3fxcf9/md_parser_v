@@ -2,6 +2,14 @@ struct BoldNode {
 	content []InlineNode
 }
 
+pub fn (b BoldNode) to_str(indent int) string {
+	mut out := '${' '.repeat(indent)}Bold\n'
+	for inl in b.content {
+		out += inl.to_str(indent + 2)
+	}
+	return out
+}
+
 struct BoldFeature {}
 
 pub fn (f BoldFeature) node_name() string {

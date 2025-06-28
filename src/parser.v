@@ -6,7 +6,7 @@ pub fn Parser.new(reg &Registry) Parser {
 	return Parser{reg}
 }
 
-pub fn (p Parser) parse(tokens []Token) Node {
+pub fn (p Parser) parse(tokens []Token) []Node {
 	mut children := []Node{}
 	mut i := 0
 
@@ -35,7 +35,7 @@ pub fn (p Parser) parse(tokens []Token) Node {
 			inline_nodes := p.parse_inlines(line_tokens)
 			children << Paragraph{
 				content: inline_nodes
-			} // TODO: Better paragraph end condition
+			}
 			if i < tokens.len && tokens[i].kind == .newline {
 				i++ // skip newline
 			}
@@ -47,9 +47,7 @@ pub fn (p Parser) parse(tokens []Token) Node {
 		}
 	}
 
-	return Document{
-		children: children
-	}
+	return children
 }
 
 pub fn (p Parser) parse_inlines(tokens []Token) []InlineNode {

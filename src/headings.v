@@ -3,6 +3,14 @@ struct HeadingNode {
 	content []InlineNode
 }
 
+pub fn (b HeadingNode) to_str(indent int) string {
+	mut out := '${' '.repeat(indent)}Heading\n'
+	for inl in b.content {
+		out += inl.to_str(indent + 2)
+	}
+	return out
+}
+
 struct HeadingFeature {}
 
 pub fn (f HeadingFeature) node_name() string {

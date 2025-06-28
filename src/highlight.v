@@ -4,6 +4,14 @@ struct HighlightNode {
 	content []InlineNode
 }
 
+pub fn (b HighlightNode) to_str(indent int) string {
+	mut out := '${' '.repeat(indent)}Highlight\n'
+	for inl in b.content {
+		out += inl.to_str(indent + 2)
+	}
+	return out
+}
+
 struct HighlightFeature {}
 
 pub fn (f HighlightFeature) node_name() string {

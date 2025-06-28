@@ -7,15 +7,12 @@ pub fn HTMLRenderer.new(registry Registry) HTMLRenderer {
 }
 
 // Entry point: render the whole document tree
-pub fn (r HTMLRenderer) render_document(doc Node) string {
-	if doc is Document {
-		mut out := ''
-		for child in doc.children {
-			out += r.render_node(child)
-		}
-		return out
+pub fn (r HTMLRenderer) render_document(doc []Node) string {
+	mut out := ''
+	for child in doc {
+		out += r.render_node(child)
 	}
-	return r.render_node(doc)
+	return out
 }
 
 // Render a single block node

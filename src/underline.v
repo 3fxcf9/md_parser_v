@@ -4,6 +4,14 @@ struct UnderlineNode {
 	content []InlineNode
 }
 
+pub fn (n UnderlineNode) to_str(indent int) string {
+	mut out := '${' '.repeat(indent)}Underline\n'
+	for inl in n.content {
+		out += inl.to_str(indent + 2)
+	}
+	return out
+}
+
 struct UnderlineFeature {}
 
 pub fn (f UnderlineFeature) node_name() string {

@@ -2,6 +2,10 @@ struct MathInlineNode {
 	content string
 }
 
+pub fn (m MathInlineNode) to_str(indent int) string {
+	return '${' '.repeat(indent)}InlineMath(${m.content})\n'
+}
+
 struct MathInlineFeature {}
 
 pub fn (f MathInlineFeature) node_name() string {
