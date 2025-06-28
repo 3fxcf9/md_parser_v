@@ -8,6 +8,7 @@ fn main() {
 	mut features := []Feature{}
 
 	// BEGIN ENABLED FEATURES
+	features << HeadingFeature{}
 	features << BoldFeature{}
 	features << ItalicFeature{}
 	features << MathDisplayFeature{}
@@ -35,9 +36,9 @@ fn main() {
 	input := os.read_file(os.args[1] or { 'syntax.md' }) or { panic('Missing file') }
 
 	tokens := tokenize(input)
-	// dump(tokens)
+	dump(tokens)
 	document := parse.parse(tokens)
-	// dump(document)
+	dump(document)
 	output := render.render_document(document)
 
 	println(output)

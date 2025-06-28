@@ -44,9 +44,9 @@ pub fn (f StrikethroughFeature) parse_inline(tokens []Token, position int, reg &
 }
 
 pub fn (f StrikethroughFeature) render(node Node, renderer HTMLRenderer) string {
-	bold_node := node as StrikethroughNode
+	strikethrough_node := node as StrikethroughNode
 	mut result := ''
-	for child in bold_node.content {
+	for child in strikethrough_node.content {
 		result += renderer.render_node(child as Node)
 	}
 	return '<s>${result}</s>'

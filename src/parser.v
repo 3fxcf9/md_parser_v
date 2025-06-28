@@ -79,10 +79,4 @@ pub fn (p Parser) parse_inlines(tokens []Token) []InlineNode {
 	}
 
 	return result
-
-	// mut text := ''
-	// for t in tokens {
-	// 	text += t.lit
-	// }
-	// return [TextNode{text}]
 }

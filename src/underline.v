@@ -44,9 +44,9 @@ pub fn (f UnderlineFeature) parse_inline(tokens []Token, position int, reg &Regi
 }
 
 pub fn (f UnderlineFeature) render(node Node, renderer HTMLRenderer) string {
-	bold_node := node as UnderlineNode
+	underline_node := node as UnderlineNode
 	mut result := ''
-	for child in bold_node.content {
+	for child in underline_node.content {
 		result += renderer.render_node(child as Node)
 	}
 	return '<u>${result}</u>'

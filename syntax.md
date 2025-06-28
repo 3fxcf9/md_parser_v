@@ -1,4 +1,4 @@
-# Heading
+# Heading (can contain ++_formatting_++)
 
 ## Basic syntax
 
@@ -15,7 +15,7 @@ paragraph OK
 
 [link](url)
 ((footnote))
-{{sidenote}}
+{{sidenote}}  -> https://scripter.co/sidenotes-using-only-css/ for style inspiration
 
 `inline code`
 
@@ -23,14 +23,14 @@ paragraph OK
 code block
 ```
 
-$inline math$
+$inline math$ OK
 
 $$
 display math OK
 $$
 
 \[
-display math OK
+display math
 \]
 
 ## Lists
@@ -105,4 +105,3 @@ text
 %%%
 %%
 %
-

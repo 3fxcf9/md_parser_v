@@ -1,5 +1,3 @@
-// TODO: Simplify similar features
-
 struct NbspNode {}
 
 struct NbspFeature {}

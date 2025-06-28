@@ -44,9 +44,9 @@ pub fn (f HighlightFeature) parse_inline(tokens []Token, position int, reg &Regi
 }
 
 pub fn (f HighlightFeature) render(node Node, renderer HTMLRenderer) string {
-	bold_node := node as HighlightNode
+	highlight_node := node as HighlightNode
 	mut result := ''
-	for child in bold_node.content {
+	for child in highlight_node.content {
 		result += renderer.render_node(child as Node)
 	}
 	return '<mark>${result}</mark>'
