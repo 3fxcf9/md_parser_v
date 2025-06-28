@@ -1,12 +1,19 @@
 struct ListNode {
+	type  ListType
+	start u8
 mut:
-	items   []ListItemNode
-	ordered bool
-	start   u8
+	items []ListItemNode
+}
+
+enum ListType {
+	ordered
+	dash
+	star
+	plus
 }
 
 pub fn (l ListNode) to_str(indent int) string {
-	mut out := '${' '.repeat(indent)}List(ordered=${l.ordered})\n'
+	mut out := '${' '.repeat(indent)}List(ordered=${l.type})\n'
 	for item in l.items {
 		out += item.to_str(indent + 2)
 	}
@@ -45,9 +52,15 @@ pub fn (f ListFeature) parse_block(tokens []Token, position int, reg &Registry) 
 	offset := if ordered { 1 } else { 0 }
 
 	mut list := ListNode{
-		items:   []
-		ordered: ordered
-		start:   if ordered { open.lit.u8() } else { 0 }
+		items: []
+		start: if ordered { open.lit.u8() } else { 0 }
+		type:  match open.kind {
+			.text { .ordered }
+			.dash { .dash }
+			.star { .star }
+			.plus { .plus }
+			else { .dash }
+		}
 	}
 
 	mut i := position
@@ -93,9 +106,17 @@ pub fn (f ListFeature) parse_inline(tokens []Token, position int, reg &Registry)
 
 pub fn (f ListFeature) render(node Node, r HTMLRenderer) string {
 	list := node as ListNode
-	tag := if list.ordered { 'ol' } else { 'ul' }
-	start := if list.ordered && list.start != 1 { ' start="${list.start}"' } else { '' }
-	mut out := '<${tag}${start}>\n'
+	tag := if list.type == .ordered { 'ol' } else { 'ul' }
+
+	arguments := match true {
+		list.type == .ordered && list.start != 1 { 'start="${list.start}"' }
+		list.type == .dash { 'class="list-dash"' }
+		list.type == .star { 'class="list-star"' }
+		list.type == .plus { 'class="list-plus"' }
+		else { '' }
+	}
+
+	mut out := '<${tag} ${arguments}>\n'
 	for item in list.items {
 		out += '<li>'
 		for child in item.content {
