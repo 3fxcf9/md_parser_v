@@ -1,9 +1,12 @@
-interface Node {
+module shared
+
+pub interface Node {
 	to_str(indent int) string
 }
 
-struct Paragraph {
-	content []InlineNode
+pub struct Paragraph {
+pub:
+	content []Node
 }
 
 pub fn (n Paragraph) to_str(indent int) string {
@@ -14,11 +17,8 @@ pub fn (n Paragraph) to_str(indent int) string {
 	return out
 }
 
-interface InlineNode {
-	to_str(indent int) string
-}
-
-struct TextNode {
+pub struct TextNode {
+pub:
 	text string
 }
 

@@ -1,29 +1,33 @@
 import os
+import lexer { tokenize }
+import parser { Parser }
+import features { BoldFeature, CodeInlineFeature, Feature, HeadingFeature, HighlightFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, StrikethroughFeature, UnderlineFeature }
+import shared { HTMLRenderer, Registry }
 
 struct Config {
 	features []Feature
 }
 
 fn main() {
-	mut features := []Feature{}
+	mut f := []Feature{}
 
 	// BEGIN ENABLED FEATURES
-	features << HeadingFeature{}
-	features << BoldFeature{}
-	features << ItalicFeature{}
-	features << UnderlineFeature{}
-	features << HighlightFeature{}
-	features << StrikethroughFeature{}
-	features << LinkFeature{}
-	features << MathDisplayFeature{}
-	features << MathInlineFeature{}
-	features << CodeInlineFeature{}
-	features << NbspFeature{}
-	features << ListFeature{}
+	f << HeadingFeature{}
+	f << BoldFeature{}
+	f << ItalicFeature{}
+	f << UnderlineFeature{}
+	f << HighlightFeature{}
+	f << StrikethroughFeature{}
+	f << LinkFeature{}
+	f << MathDisplayFeature{}
+	f << MathInlineFeature{}
+	f << CodeInlineFeature{}
+	f << NbspFeature{}
+	f << ListFeature{}
 	// END ENABLED FEATURES
 
 	cfg := Config{
-		features: features
+		features: f
 	}
 
 	mut registry := Registry.new()
@@ -39,13 +43,13 @@ fn main() {
 	input := os.read_file(os.args[1] or { 'test.md' }) or { panic('Missing file') }
 
 	tokens := tokenize(input)
-	// for t in tokens {
-	// 	print(t)
-	// }
+	for t in tokens {
+		print(t)
+	}
 	document := parse.parse(tokens)
-	// for n in document {
-	// 	println(n.to_str(0))
-	// }
+	for n in document {
+		println(n.to_str(0))
+	}
 	output := render.render_document(document)
 
 	println(output)

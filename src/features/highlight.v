@@ -1,7 +1,13 @@
+module features
+
+import shared { HTMLRenderer, Node, Registry }
+import parser { Parser }
+import lexer { Token }
+
 // TODO: Simplify similar features
 
 struct HighlightNode {
-	content []InlineNode
+	content []Node
 }
 
 pub fn (b HighlightNode) to_str(indent int) string {
@@ -12,7 +18,7 @@ pub fn (b HighlightNode) to_str(indent int) string {
 	return out
 }
 
-struct HighlightFeature {}
+pub struct HighlightFeature {}
 
 pub fn (f HighlightFeature) node_name() string {
 	return 'HighlightNode'
@@ -27,7 +33,7 @@ pub fn (f HighlightFeature) parse_block(tokens []Token, position int, reg &Regis
 	return none
 }
 
-pub fn (f HighlightFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(InlineNode, int) {
+pub fn (f HighlightFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	if position + 2 >= tokens.len {
 		return none
 	}
@@ -40,8 +46,8 @@ pub fn (f HighlightFeature) parse_inline(tokens []Token, position int, reg &Regi
 	for i := position + 2; i < tokens.len - 1; i++ {
 		if tokens[i].kind == .equal && tokens[i + 1].kind == .equal {
 			inner_tokens := tokens[position + 2..i]
-			parser := Parser.new(reg)
-			content := parser.parse_inlines(inner_tokens)
+			p := Parser.new(reg)
+			content := p.parse_inlines(inner_tokens)
 			return HighlightNode{
 				content: content
 			}, i + 2 - position

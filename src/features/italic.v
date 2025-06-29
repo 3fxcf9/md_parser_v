@@ -1,5 +1,11 @@
+module features
+
+import shared { HTMLRenderer, Node, Node, Registry }
+import parser { Parser }
+import lexer { Token }
+
 struct ItalicNode {
-	content []InlineNode
+	content []Node
 }
 
 pub fn (n ItalicNode) to_str(indent int) string {
@@ -10,7 +16,7 @@ pub fn (n ItalicNode) to_str(indent int) string {
 	return out
 }
 
-struct ItalicFeature {}
+pub struct ItalicFeature {}
 
 pub fn (f ItalicFeature) node_name() string {
 	return 'ItalicNode'
@@ -25,7 +31,7 @@ pub fn (f ItalicFeature) parse_block(tokens []Token, position int, reg &Registry
 	return none
 }
 
-pub fn (f ItalicFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(InlineNode, int) {
+pub fn (f ItalicFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	if position + 1 >= tokens.len {
 		return none
 	}
@@ -39,8 +45,8 @@ pub fn (f ItalicFeature) parse_inline(tokens []Token, position int, reg &Registr
 	for i := position + 1; i < tokens.len; i++ {
 		if tokens[i].kind == open.kind {
 			inner_tokens := tokens[position + 1..i]
-			parser := Parser.new(reg)
-			content := parser.parse_inlines(inner_tokens)
+			p := Parser.new(reg)
+			content := p.parse_inlines(inner_tokens)
 			return ItalicNode{
 				content: content
 			}, i + 1 - position

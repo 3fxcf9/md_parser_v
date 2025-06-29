@@ -1,4 +1,9 @@
-struct Parser {
+module parser
+
+import shared { Node, Paragraph, Registry, TextNode }
+import lexer { Token }
+
+pub struct Parser {
 	reg &Registry
 }
 
@@ -50,8 +55,8 @@ pub fn (p Parser) parse(tokens []Token) []Node {
 	return children
 }
 
-pub fn (p Parser) parse_inlines(tokens []Token) []InlineNode {
-	mut result := []InlineNode{}
+pub fn (p Parser) parse_inlines(tokens []Token) []Node {
+	mut result := []Node{}
 	mut i := 0
 
 	for i < tokens.len {

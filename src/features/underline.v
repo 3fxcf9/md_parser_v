@@ -1,7 +1,13 @@
+module features
+
+import shared { HTMLRenderer, Node, Node, Registry }
+import parser { Parser }
+import lexer { Token }
+
 // TODO: Simplify similar features
 
 struct UnderlineNode {
-	content []InlineNode
+	content []Node
 }
 
 pub fn (n UnderlineNode) to_str(indent int) string {
@@ -12,7 +18,7 @@ pub fn (n UnderlineNode) to_str(indent int) string {
 	return out
 }
 
-struct UnderlineFeature {}
+pub struct UnderlineFeature {}
 
 pub fn (f UnderlineFeature) node_name() string {
 	return 'UnderlineNode'
@@ -27,7 +33,7 @@ pub fn (f UnderlineFeature) parse_block(tokens []Token, position int, reg &Regis
 	return none
 }
 
-pub fn (f UnderlineFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(InlineNode, int) {
+pub fn (f UnderlineFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	if position + 2 >= tokens.len {
 		return none
 	}
@@ -40,8 +46,8 @@ pub fn (f UnderlineFeature) parse_inline(tokens []Token, position int, reg &Regi
 	for i := position + 2; i < tokens.len - 1; i++ {
 		if tokens[i].kind == .plus && tokens[i + 1].kind == .plus {
 			inner_tokens := tokens[position + 2..i]
-			parser := Parser.new(reg)
-			content := parser.parse_inlines(inner_tokens)
+			p := Parser.new(reg)
+			content := p.parse_inlines(inner_tokens)
 			return UnderlineNode{
 				content: content
 			}, i + 2 - position

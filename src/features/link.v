@@ -1,6 +1,12 @@
+module features
+
+import shared { HTMLRenderer, Node, Node, Registry }
+import parser { Parser }
+import lexer { Token }
+
 struct LinkNode {
 	href    string
-	content []InlineNode
+	content []Node
 }
 
 pub fn (b LinkNode) to_str(indent int) string {
@@ -11,7 +17,7 @@ pub fn (b LinkNode) to_str(indent int) string {
 	return out
 }
 
-struct LinkFeature {}
+pub struct LinkFeature {}
 
 pub fn (f LinkFeature) node_name() string {
 	return 'LinkNode'
@@ -25,7 +31,7 @@ pub fn (f LinkFeature) parse_block(tokens []Token, position int, reg &Registry) 
 	return none
 }
 
-pub fn (f LinkFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(InlineNode, int) {
+pub fn (f LinkFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	if position >= tokens.len || tokens[position].kind != .lbracket {
 		return none
 	}
@@ -61,8 +67,8 @@ pub fn (f LinkFeature) parse_inline(tokens []Token, position int, reg &Registry)
 
 	// Extract label tokens and parse inline content
 	label_tokens := tokens[position + 1..label_end]
-	parser := Parser.new(reg)
-	label_nodes := parser.parse_inlines(label_tokens)
+	p := Parser.new(reg)
+	label_nodes := p.parse_inlines(label_tokens)
 
 	// Extract URL
 	mut url := ''

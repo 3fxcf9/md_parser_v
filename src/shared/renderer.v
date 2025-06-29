@@ -1,4 +1,6 @@
-struct HTMLRenderer {
+module shared
+
+pub struct HTMLRenderer {
 	registry &Registry
 }
 
@@ -17,7 +19,7 @@ pub fn (r HTMLRenderer) render_document(doc []Node) string {
 
 // Render a single block node
 pub fn (r HTMLRenderer) render_node(node Node) string {
-	type_name := node.type_name()
+	type_name := node.type_name().all_after_last('.')
 
 	// if node is TextNode {
 	// 	return node.text

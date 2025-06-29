@@ -1,3 +1,9 @@
+module features
+
+import shared { HTMLRenderer, Node, Registry }
+import parser { Parser }
+import lexer { Token }
+
 struct ListNode {
 	type  ListType
 	start u8
@@ -32,7 +38,7 @@ pub fn (li ListItemNode) to_str(indent int) string {
 	return out
 }
 
-struct ListFeature {}
+pub struct ListFeature {}
 
 pub fn (f ListFeature) node_name() string {
 	return 'ListNode'
@@ -100,7 +106,7 @@ pub fn (f ListFeature) parse_block(tokens []Token, position int, reg &Registry) 
 	return list, i - position
 }
 
-pub fn (f ListFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(InlineNode, int) {
+pub fn (f ListFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	return none
 }
 

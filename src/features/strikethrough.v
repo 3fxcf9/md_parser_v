@@ -1,7 +1,13 @@
+module features
+
+import shared { HTMLRenderer, Node, Node, Registry }
+import parser { Parser }
+import lexer { Token }
+
 // TODO: Simplify similar features
 
 struct StrikethroughNode {
-	content []InlineNode
+	content []Node
 }
 
 pub fn (n StrikethroughNode) to_str(indent int) string {
@@ -12,7 +18,7 @@ pub fn (n StrikethroughNode) to_str(indent int) string {
 	return out
 }
 
-struct StrikethroughFeature {}
+pub struct StrikethroughFeature {}
 
 pub fn (f StrikethroughFeature) node_name() string {
 	return 'StrikethroughNode'
@@ -27,7 +33,7 @@ pub fn (f StrikethroughFeature) parse_block(tokens []Token, position int, reg &R
 	return none
 }
 
-pub fn (f StrikethroughFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(InlineNode, int) {
+pub fn (f StrikethroughFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	if position + 2 >= tokens.len {
 		return none
 	}
@@ -40,8 +46,8 @@ pub fn (f StrikethroughFeature) parse_inline(tokens []Token, position int, reg &
 	for i := position + 2; i < tokens.len - 1; i++ {
 		if tokens[i].kind == .tilde && tokens[i + 1].kind == .tilde {
 			inner_tokens := tokens[position + 2..i]
-			parser := Parser.new(reg)
-			content := parser.parse_inlines(inner_tokens)
+			p := Parser.new(reg)
+			content := p.parse_inlines(inner_tokens)
 			return StrikethroughNode{
 				content: content
 			}, i + 2 - position

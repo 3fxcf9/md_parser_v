@@ -1,3 +1,8 @@
+module features
+
+import shared { HTMLRenderer, Node, Registry }
+import lexer { Token }
+
 struct MathInlineNode {
 	content string
 }
@@ -6,7 +11,7 @@ pub fn (m MathInlineNode) to_str(indent int) string {
 	return '${' '.repeat(indent)}InlineMath(${m.content})\n'
 }
 
-struct MathInlineFeature {}
+pub struct MathInlineFeature {}
 
 pub fn (f MathInlineFeature) node_name() string {
 	return 'MathInlineNode'
@@ -21,7 +26,7 @@ pub fn (f MathInlineFeature) parse_block(tokens []Token, position int, reg &Regi
 	return none
 }
 
-pub fn (f MathInlineFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(InlineNode, int) {
+pub fn (f MathInlineFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	if position + 1 >= tokens.len {
 		return none
 	}

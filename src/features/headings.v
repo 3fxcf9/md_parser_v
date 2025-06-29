@@ -1,6 +1,12 @@
+module features
+
+import shared { HTMLRenderer, Node, Registry }
+import parser { Parser }
+import lexer { Token }
+
 struct HeadingNode {
 	level   u8
-	content []InlineNode
+	content []Node
 }
 
 pub fn (b HeadingNode) to_str(indent int) string {
@@ -11,7 +17,7 @@ pub fn (b HeadingNode) to_str(indent int) string {
 	return out
 }
 
-struct HeadingFeature {}
+pub struct HeadingFeature {}
 
 pub fn (f HeadingFeature) node_name() string {
 	return 'HeadingNode'
@@ -39,8 +45,8 @@ pub fn (f HeadingFeature) parse_block(tokens []Token, position int, reg &Registr
 	for i := content_start; i < tokens.len - 1; i++ {
 		if tokens[i].kind == .newline {
 			inner_tokens := tokens[content_start..i]
-			parser := Parser.new(reg)
-			content := parser.parse_inlines(inner_tokens)
+			p := Parser.new(reg)
+			content := p.parse_inlines(inner_tokens)
 			return HeadingNode{
 				level:   level
 				content: content
@@ -52,7 +58,7 @@ pub fn (f HeadingFeature) parse_block(tokens []Token, position int, reg &Registr
 }
 
 // No inline handling
-pub fn (f HeadingFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(InlineNode, int) {
+pub fn (f HeadingFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	return none
 }
 

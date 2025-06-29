@@ -1,5 +1,11 @@
+module features
+
+import shared { HTMLRenderer, Node, Registry }
+import parser { Parser }
+import lexer { Token }
+
 struct BoldNode {
-	content []InlineNode
+	content []Node
 }
 
 pub fn (b BoldNode) to_str(indent int) string {
@@ -10,7 +16,7 @@ pub fn (b BoldNode) to_str(indent int) string {
 	return out
 }
 
-struct BoldFeature {}
+pub struct BoldFeature {}
 
 pub fn (f BoldFeature) node_name() string {
 	return 'BoldNode'
@@ -25,7 +31,7 @@ pub fn (f BoldFeature) parse_block(tokens []Token, position int, reg &Registry) 
 	return none
 }
 
-pub fn (f BoldFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(InlineNode, int) {
+pub fn (f BoldFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	if position + 2 >= tokens.len {
 		return none
 	}
@@ -44,8 +50,8 @@ pub fn (f BoldFeature) parse_inline(tokens []Token, position int, reg &Registry)
 	for i := position + 2; i < tokens.len - 1; i++ {
 		if tokens[i].kind == open.kind && tokens[i + 1].kind == open.kind {
 			inner_tokens := tokens[position + 2..i]
-			parser := Parser.new(reg)
-			content := parser.parse_inlines(inner_tokens)
+			p := Parser.new(reg)
+			content := p.parse_inlines(inner_tokens)
 			return BoldNode{
 				content: content
 			}, i + 2 - position

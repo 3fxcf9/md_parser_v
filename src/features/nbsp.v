@@ -1,3 +1,8 @@
+module features
+
+import shared { HTMLRenderer, Node, Registry }
+import lexer { Token }
+
 struct NbspNode {
 	narrow bool
 }
@@ -6,7 +11,7 @@ pub fn (n NbspNode) to_str(indent int) string {
 	return '${' '.repeat(indent)}InlineMath\n'
 }
 
-struct NbspFeature {}
+pub struct NbspFeature {}
 
 pub fn (f NbspFeature) node_name() string {
 	return 'NbspNode'
@@ -21,7 +26,7 @@ pub fn (f NbspFeature) parse_block(tokens []Token, position int, reg &Registry) 
 	return none
 }
 
-pub fn (f NbspFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(InlineNode, int) {
+pub fn (f NbspFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	if tokens[position].kind == .tilde {
 		return NbspNode{position + 1 < tokens.len && tokens[position + 1].kind == .colon}, 1
 	}

@@ -1,3 +1,8 @@
+module features
+
+import shared { HTMLRenderer, Node, Registry }
+import lexer { Token }
+
 struct CodeInlineNode {
 	content string
 }
@@ -6,7 +11,7 @@ pub fn (m CodeInlineNode) to_str(indent int) string {
 	return '${' '.repeat(indent)}InlineCode(${m.content})\n'
 }
 
-struct CodeInlineFeature {}
+pub struct CodeInlineFeature {}
 
 pub fn (f CodeInlineFeature) node_name() string {
 	return 'CodeInlineNode'
@@ -21,7 +26,7 @@ pub fn (f CodeInlineFeature) parse_block(tokens []Token, position int, reg &Regi
 	return none
 }
 
-pub fn (f CodeInlineFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(InlineNode, int) {
+pub fn (f CodeInlineFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	if position + 2 >= tokens.len {
 		return none
 	}
