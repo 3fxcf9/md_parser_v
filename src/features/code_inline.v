@@ -27,27 +27,25 @@ pub fn (f CodeInlineFeature) parse_block(tokens []Token, position int, reg &Regi
 }
 
 pub fn (f CodeInlineFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
-	if position + 2 >= tokens.len {
+	if position >= tokens.len {
 		return none
 	}
 
-	if tokens[position].kind != .backtick || tokens[position + 1].kind != .backtick
-		|| tokens[position + 2].kind != .backtick {
+	if tokens[position].kind != .backtick {
 		return none
 	}
 
 	// Look ahead for closing marks
-	for i := position + 3; i < tokens.len; i++ {
-		if i + 2 < tokens.len && tokens[i].kind == .backtick && tokens[i].kind == .backtick
-			&& tokens[i + 1].kind == .backtick && tokens[i + 2].kind == .backtick {
-			inner_tokens := tokens[position + 3..i]
+	for i := position + 1; i < tokens.len; i++ {
+		if i < tokens.len && tokens[i].kind == .backtick {
+			inner_tokens := tokens[position + 1..i]
 			mut text := ''
 			for t in inner_tokens {
 				text += t.lit
 			}
 			return CodeInlineNode{
 				content: text
-			}, i + 3 - position
+			}, i + 1 - position
 		}
 	}
 

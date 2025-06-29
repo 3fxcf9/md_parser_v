@@ -1,4 +1,12 @@
-- a first list with ```inline code```
+- a first list with `inline code` and
+  
+  ```lang
+  a code block
+  ```
+
+  ```
+  a code block
+  ```
 
 * second list (incompatible bullets)
 
