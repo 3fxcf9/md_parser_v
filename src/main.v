@@ -44,15 +44,22 @@ fn main() {
 	mut render := HTMLRenderer.new(registry)
 
 	input := os.read_file(os.args[1] or { 'test.md' }) or { panic('Missing file') }
+	println('\x1b[1;97mIN:\x1b[0m')
+	println(input)
 
+	println('\n\n\x1b[1;97mTokens:\x1b[0m')
 	tokens := tokenize(input)
 	for t in tokens {
 		print(t)
 	}
+
+	println('\n\n\x1b[1;97mAST:\x1b[0m')
 	document := parse.parse(tokens)
-	// for n in document {
-	// 	println(n.to_str(0))
-	// }
+	for n in document {
+		println(n.to_str(0))
+	}
+
+	println('\n\n\x1b[1;97mOUT:\x1b[0m')
 	output := render.render_document(document)
 
 	println(output)

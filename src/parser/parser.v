@@ -72,7 +72,11 @@ pub fn (p Parser) parse_inlines(tokens []Token) []Node {
 		// fallback: accumulate as text
 		if !matched {
 			// Avoid adding newlines into the ast
-			if tokens[i].kind != .newline {
+			if tokens[i].kind == .newline {
+				result << TextNode{
+					text: ' '
+				}
+			} else {
 				result << TextNode{
 					text: tokens[i].lit
 				}

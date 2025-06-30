@@ -19,7 +19,7 @@ enum ListType {
 }
 
 pub fn (l ListNode) to_str(indent int) string {
-	mut out := '${' '.repeat(indent)}List(ordered=${l.type})\n'
+	mut out := '${' '.repeat(indent)}List(type=${l.type})\n'
 	for item in l.items {
 		out += item.to_str(indent + 2)
 	}
@@ -100,7 +100,15 @@ pub fn (f ListFeature) parse_block(tokens []Token, position int, reg &Registry) 
 			i += increment
 		}
 
-		list.items << ListItemNode{Parser.new(reg).parse(item_content)}
+		parsed := Parser.new(reg).parse(item_content)
+
+		// Uncomment not to use a paragraph if no other non-inline blocks in list-item
+		// if parsed.len == 1 && parsed[0] is Paragraph {
+		// 	list.items << ListItemNode{(parsed[0] as Paragraph).content}
+		// } else {
+		// 	list.items << ListItemNode{parsed}
+		// }
+		list.items << ListItemNode{parsed}
 	}
 
 	return list, i - position
@@ -137,6 +145,11 @@ pub fn (f ListFeature) render(node Node, r HTMLRenderer) string {
 // Utils
 
 fn is_list_item(tokens []Token, position int) bool {
+	// List should begin at the start of a line
+	if position > 0 && tokens[position - 1].kind != .newline {
+		return false
+	}
+
 	is_ul := position + 2 < tokens.len && tokens[position].kind in [.dash, .plus, .star]
 		&& tokens[position + 1].kind == .space
 	is_ol := position + 3 < tokens.len && tokens[position].kind == .text
