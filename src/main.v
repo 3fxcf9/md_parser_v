@@ -1,7 +1,7 @@
 import os
 import lexer { tokenize }
 import parser { Parser }
-import features { BoldFeature, CodeBlockFeature, CodeInlineFeature, Feature, HeadingFeature, HighlightFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, StrikethroughFeature, UnderlineFeature }
+import features { BoldFeature, CodeBlockFeature, CodeInlineFeature, Feature, HeadingFeature, HighlightFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
 import shared { HTMLRenderer, Registry }
 
 struct Config {
@@ -24,6 +24,7 @@ fn main() {
 	f << CodeInlineFeature{}
 	f << CodeBlockFeature{}
 	f << NbspFeature{}
+	f << SidenoteFeature{}
 	f << ListFeature{}
 	// END ENABLED FEATURES
 

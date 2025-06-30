@@ -14,13 +14,13 @@ paragraph OK
 ...~:.. nnbsp OK
 
 [link](url) OK
-((footnote))
-{{sidenote}}  -> https://scripter.co/sidenotes-using-only-css/ for style inspiration
+{{footnote}}
+((sidenote))  -> https://scripter.co/sidenotes-using-only-css/ for style inspiration
 
-`inline code`
+`inline code` OK
 
 ```lang
-code block
+code block OK
 ```
 
 $inline math$ OK

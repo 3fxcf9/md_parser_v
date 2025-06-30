@@ -10,7 +10,7 @@
 
 * second list (incompatible bullets)
 
-7. ordered list starting at 7
+7. ordered list starting at 7((sidenote))
 
 1. No matter what goes next
 
