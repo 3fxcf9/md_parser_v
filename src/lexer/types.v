@@ -21,6 +21,7 @@ pub enum TokenKind {
 	hash
 	percent
 	tilde
+	caret
 	colon
 	backtick
 	lparen
@@ -85,6 +86,9 @@ pub fn (t Token) str() string {
 		}
 		.tilde {
 			'${red}[~]${reset}'
+		}
+		.caret {
+			'${red}[^]${reset}'
 		}
 		.colon {
 			'${blue}[:]\${reset}'

@@ -17,6 +17,7 @@ pub fn tokenize(input string) []Token {
 		`#`:  TokenKind.hash
 		`%`:  TokenKind.percent
 		`~`:  TokenKind.tilde
+		`^`:  TokenKind.caret
 		`:`:  TokenKind.colon
 		`\``: TokenKind.backtick
 		`(`:  TokenKind.lparen

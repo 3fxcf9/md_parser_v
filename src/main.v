@@ -1,7 +1,7 @@
 import os
 import lexer { tokenize }
 import parser { Parser }
-import features { BoldFeature, CodeBlockFeature, CodeInlineFeature, Feature, HeadingFeature, HighlightFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
+import features { BoldFeature, CodeBlockFeature, CodeInlineFeature, Feature, HRuleFeature, HeadingFeature, HighlightFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
 import shared { HTMLRenderer, Registry }
 
 struct Config {
@@ -25,6 +25,7 @@ fn main() {
 	f << CodeBlockFeature{}
 	f << NbspFeature{}
 	f << SidenoteFeature{}
+	f << HRuleFeature{}
 	f << ListFeature{}
 	// END ENABLED FEATURES
 
@@ -45,9 +46,9 @@ fn main() {
 	input := os.read_file(os.args[1] or { 'test.md' }) or { panic('Missing file') }
 
 	tokens := tokenize(input)
-	// for t in tokens {
-	// 	print(t)
-	// }
+	for t in tokens {
+		print(t)
+	}
 	document := parse.parse(tokens)
 	// for n in document {
 	// 	println(n.to_str(0))

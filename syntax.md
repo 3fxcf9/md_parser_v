@@ -15,7 +15,7 @@ paragraph OK
 
 [link](url) OK
 {{footnote}}
-((sidenote))  -> https://scripter.co/sidenotes-using-only-css/ for style inspiration
+((sidenote))  OK -> https://scripter.co/sidenotes-using-only-css/ for style inspiration
 
 `inline code` OK
 
@@ -65,10 +65,9 @@ display math
 
 ## Hline
 
-=== filled hline
---- dashed hline
-... dotted hline
-^^^ sawtooth hline
+=== filled hline OK
+--- dashed hline OK
+^^^ sawtooth hline OK
 
 ## Environments
 

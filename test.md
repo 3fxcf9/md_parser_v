@@ -16,3 +16,16 @@
 
 
 1. Two empty lines ends the list
+
+
+---
+
+test
+
+===
+
+test
+
+^^^
+
+test
