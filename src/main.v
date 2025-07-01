@@ -1,67 +1,81 @@
+module main
+
 import os
 import lexer { tokenize }
 import parser { Parser }
-import features { BoldFeature, CodeBlockFeature, CodeInlineFeature, EnvironmentFeature, Feature, HRuleFeature, HeadingFeature, HighlightFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
-import shared { HTMLRenderer, Registry }
+import shared { HTMLRenderer }
 
-struct Config {
-	features []Feature
+fn print_usage_and_exit() {
+	eprintln('Usage: parser [--debug] <file.md>')
+	exit(1)
 }
 
 fn main() {
-	mut f := []Feature{}
+	mut debug := false
+	mut filename := ''
 
-	// BEGIN ENABLED FEATURES
-	f << HeadingFeature{}
-	f << BoldFeature{}
-	f << ItalicFeature{}
-	f << UnderlineFeature{}
-	f << HighlightFeature{}
-	f << StrikethroughFeature{}
-	f << LinkFeature{}
-	f << MathDisplayFeature{}
-	f << MathInlineFeature{}
-	f << CodeInlineFeature{}
-	f << CodeBlockFeature{}
-	f << NbspFeature{}
-	f << SidenoteFeature{}
-	f << HRuleFeature{}
-	f << ListFeature{}
-	f << EnvironmentFeature{}
-	// END ENABLED FEATURES
-
-	cfg := Config{
-		features: f
+	// Parse CLI args
+	for arg in os.args[1..] {
+		if arg == '--debug' {
+			debug = true
+		} else if filename == '' {
+			filename = arg
+		} else {
+			eprintln('Unknown argument: ${arg}')
+			print_usage_and_exit()
+		}
 	}
 
-	mut registry := Registry.new()
-
-	// Register parsers and renderer
-	for feat in cfg.features {
-		feat.init(mut registry)
+	if filename == '' {
+		print_usage_and_exit()
 	}
+
+	if !os.exists(filename) {
+		eprintln('File not found: ${filename}')
+		return
+	}
+
+	input := os.read_file(filename) or {
+		eprintln('Failed to read file: ${filename}')
+		return
+	}
+
+	registry := build_registry()
 
 	mut parse := Parser.new(registry)
 	mut render := HTMLRenderer.new(registry)
 
-	input := os.read_file(os.args[1] or { 'test.md' }) or { panic('Missing file') }
-	println('\x1b[1;97mIN:\x1b[0m')
-	println(input)
-
-	println('\n\n\x1b[1;97mTokens:\x1b[0m')
 	tokens := tokenize(input)
-	for t in tokens {
-		print(t)
-	}
-
-	println('\n\n\x1b[1;97mAST:\x1b[0m')
 	document := parse.parse(tokens)
-	for n in document {
-		println(n.to_str(0))
-	}
-
-	println('\n\n\x1b[1;97mOUT:\x1b[0m')
 	output := render.render_document(document)
 
+	if debug {
+		println('\x1b[1;97mIN:\x1b[0m')
+		println(input)
+		println('\n\n\x1b[1;97mTokens:\x1b[0m')
+
+		for t in tokens {
+			print(t)
+		}
+
+		println('\n\n\x1b[1;97mAST:\x1b[0m')
+		for n in document {
+			println(n.to_str(0))
+		}
+
+		println('\n\n\x1b[1;97mOUT:\x1b[0m')
+	}
+
 	println(output)
+}
+
+fn md_to_html(md string) string {
+	registry := build_registry()
+
+	mut parse := Parser.new(registry)
+	mut render := HTMLRenderer.new(registry)
+
+	tokens := tokenize(md)
+	document := parse.parse(tokens)
+	return render.render_document(document)
 }

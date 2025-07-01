@@ -102,8 +102,10 @@ fn scan_environment_block(tokens []Token, position int) ?(string, ?string, []Tok
 		end++
 	}
 
+	// end = newline before %
+
 	// If we broke before closing %, consume nothing
-	if end + 2 >= tokens.len {
+	if end + 1 >= tokens.len {
 		return none
 	}
 
