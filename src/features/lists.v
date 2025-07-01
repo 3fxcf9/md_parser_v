@@ -85,7 +85,7 @@ pub fn (f ListFeature) parse_block(tokens []Token, position int, reg &Registry) 
 
 			mut line_content, increment := gather_line(tokens, i)
 			if tokens[i].kind == .indent {
-				new_indent_level := line_content[0].level - 2
+				new_indent_level := line_content[0].level - 2 // FIXME: Bug ?
 				if new_indent_level <= 0 {
 					line_content.delete(0)
 				} else {

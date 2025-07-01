@@ -1,89 +1,27 @@
-# Markup demo
+%thm Theorem
 
-## Basic formatting
+    %def Nested definition
 
-This is a paragraph with **bold**, _italic_, ..underlined.., ||highlighted||, and ~~strikethrough~~ text.
+        here is the definition
 
-There is also `inline code` as well as
+        %lemma Lemma
+            content of lemma
+        %
 
-```
-code blocks
-```
-
-together with some maths, inline $x=1$ and display
-
-\[
-\forall f\in\L(E),\; \dim E = \rg f + \dim\ker f
-\]
-
-You can create lists as you would in markdown
-
-- here is a first item
-
-  - here is a nested item
-
-    with another paragraph
-
-  - a second nested item with a definition
-
-    %def Definition
-    Here is a definition
     %
 
-- back to level one
-
-There are several content spacer styles
-
-===
-
----
-
-...
-
-^^^
-
-## Environments
+%
 
 %thm Theorem
 
-```
-%thm Theorem
-...
-%
+%def Badly nested definition
 
-```
+    here is the definition
 
-%
-
-%cor Corollary
-
-```
-%cor Corollary
-...
-%
-
-```
+    %lemma Lemma
+        content of lemma
+    %
 
 %
-
-%lemma Lemma
-
-```
-%lemma Lemma
-...
-%
-
-```
-
-%
-
-%def Definition
-
-```
-%def Definition
-...
-%
-
-```
 
 %

@@ -7,6 +7,7 @@ import shared { HTMLRenderer, Node, Registry }
 // TODO: Nesting
 
 const possible_env = ['thm', 'cor', 'lemma', 'def', 'rem', 'eg', 'exercise', 'fold', 'quote']
+const nested_minimum_indent = 4
 
 struct EnvironmentNode {
 	env_name string
@@ -33,20 +34,37 @@ pub fn (n EnvironmentNode) to_str(indent int) string {
 }
 
 pub fn (f EnvironmentFeature) paragraph_stop_condition(tokens []Token, position int) ?bool {
-	return is_environment_start(tokens, position)
-	// return none
+	return scan_environment_block(tokens, position) != none
 }
 
 pub fn (f EnvironmentFeature) parse_block(tokens []Token, position int, reg &Registry) ?(Node, int) {
-	if !is_environment_start(tokens, position) {
+	if env_name, title, normalized_tokens, consumed := scan_environment_block(tokens,
+		position)
+	{
+		inner_nodes := Parser.new(reg).parse(normalized_tokens)
+
+		return EnvironmentNode{
+			env_name: env_name
+			title:    title
+			content:  inner_nodes
+		}, consumed
+	} else {
+		return none
+	}
+}
+
+fn scan_environment_block(tokens []Token, position int) ?(string, ?string, []Token, int) {
+	if position + 2 >= tokens.len {
+		return none
+	}
+
+	if tokens[position].kind != .percent || tokens[position + 1].kind != .text
+		|| tokens[position + 1].lit !in possible_env {
 		return none
 	}
 
 	env_name := tokens[position + 1].lit
 
-	if position + 2 >= tokens.len {
-		return none
-	}
 	mut start := position + 2 // after env_name
 
 	// Skip space if any (if title supplied)
@@ -92,23 +110,54 @@ pub fn (f EnvironmentFeature) parse_block(tokens []Token, position int, reg &Reg
 	// end = newline before closing %
 
 	if start == end {
-		return EnvironmentNode{
-			env_name: env_name
-			title:    title
-			content:  []
-		}, end - position + 3
+		return env_name, title, []Token{}, end - position + 3
 	} else {
 		// Extract inner block content
 		inner_tokens := tokens[start + 1..end]
-		inner_nodes := Parser.new(reg).parse(inner_tokens)
 
-		dump(inner_tokens)
+		mut normalized_tokens := []Token{}
+		mut i := 0
 
-		return EnvironmentNode{
-			env_name: env_name
-			title:    title
-			content:  inner_nodes
-		}, end - position + 3
+		for i < inner_tokens.len {
+			// Collect tokens of a full line (until newline or end)
+			mut line := []Token{}
+			for i < inner_tokens.len && inner_tokens[i].kind != .newline {
+				line << inner_tokens[i]
+				i++
+			}
+			if i < inner_tokens.len && inner_tokens[i].kind == .newline {
+				line << inner_tokens[i]
+				i++
+			}
+
+			// Skip blank lines
+			if line.len == 1 && line[0].kind == .newline {
+				normalized_tokens << line[0]
+				continue
+			}
+
+			// Check first token is indent
+			if line.len == 0 || line[0].kind != .indent {
+				return none // invalid line: expected indent
+			}
+
+			orig_indent := line[0].level
+			if orig_indent < nested_minimum_indent {
+				return none // not indented enough
+			}
+
+			new_indent := orig_indent - nested_minimum_indent
+			if new_indent > 0 {
+				normalized_tokens << Token{
+					kind:  .indent
+					level: new_indent
+				}
+			}
+			// Copy rest of the line (excluding original indent)
+			normalized_tokens << line[1..]
+		}
+
+		return env_name, title, normalized_tokens, end - position + 3
 	}
 }
 
