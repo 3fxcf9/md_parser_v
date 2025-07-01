@@ -36,11 +36,18 @@ pub fn (p Parser) parse(tokens []Token) []Node {
 				}
 				i++
 			}
-			line_tokens := tokens[start..i]
-			inline_nodes := p.parse_inlines(line_tokens)
-			children << Paragraph{
-				content: inline_nodes
+
+			if start != i {
+				line_tokens := tokens[start..i]
+
+				if !line_tokens.map(it.lit).join('').is_blank() {
+					inline_nodes := p.parse_inlines(line_tokens)
+					children << Paragraph{
+						content: inline_nodes
+					}
+				}
 			}
+
 			if i < tokens.len && tokens[i].kind == .newline {
 				i++ // skip newline
 			}

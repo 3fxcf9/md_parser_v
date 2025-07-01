@@ -65,9 +65,17 @@ display math
 
 ## Hline
 
-=== filled hline OK
---- dashed hline OK
-^^^ sawtooth hline OK
+filled hline OK
+
+===
+
+dashed hline OK
+
+---
+
+sawtooth hline OK
+
+^^^
 
 ## Environments
 

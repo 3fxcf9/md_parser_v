@@ -1,31 +1,89 @@
-- a first list with `inline code` and
-  
-  ```lang
-  a code block
-  ```
+# Markup demo
 
-  ```
-  a code block
-  ```
+## Basic formatting
 
-* second list (incompatible bullets)
+This is a paragraph with **bold**, _italic_, ..underlined.., ||highlighted||, and ~~strikethrough~~ text.
 
-7. ordered list starting at 7((sidenote))
+There is also `inline code` as well as
 
-1. No matter what goes next
+```
+code blocks
+```
 
+together with some maths, inline $x=1$ and display
 
-1. Two empty lines ends the list
+\[
+\forall f\in\L(E),\; \dim E = \rg f + \dim\ker f
+\]
 
+You can create lists as you would in markdown
 
----
+- here is a first item
 
-test
+  - here is a nested item
+
+    with another paragraph
+
+  - a second nested item with a definition
+
+    %def Definition
+    Here is a definition
+    %
+
+- back to level one
+
+There are several content spacer styles
 
 ===
 
-test
+---
+
+...
 
 ^^^
 
-test
+## Environments
+
+%thm Theorem
+
+```
+%thm Theorem
+...
+%
+
+```
+
+%
+
+%cor Corollary
+
+```
+%cor Corollary
+...
+%
+
+```
+
+%
+
+%lemma Lemma
+
+```
+%lemma Lemma
+...
+%
+
+```
+
+%
+
+%def Definition
+
+```
+%def Definition
+...
+%
+
+```
+
+%

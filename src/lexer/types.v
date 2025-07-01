@@ -91,10 +91,10 @@ pub fn (t Token) str() string {
 			'${red}[^]${reset}'
 		}
 		.colon {
-			'${blue}[:]\${reset}'
+			'${blue}[:]${reset}'
 		}
 		.backtick {
-			'${blue}[`]\${reset}'
+			'${blue}[`]${reset}'
 		}
 		else {
 			'${red}[DELIM:${t.lit}]${reset}'
