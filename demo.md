@@ -97,7 +97,7 @@ There are several content spacer styles
 Environments can be nested
 
 %thm Level 1
-    %thm Level 2
+    %fold Level 2
         Each level must be indented by 4 spaces
     %
 %

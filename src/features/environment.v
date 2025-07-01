@@ -169,17 +169,31 @@ pub fn (f EnvironmentFeature) parse_inline(tokens []Token, position int, reg &Re
 
 pub fn (f EnvironmentFeature) render(node Node, renderer HTMLRenderer) string {
 	env := node as EnvironmentNode
-	mut html := '<div class="environment environment-${env.env_name}">'
-	if t := env.title {
-		if env.env_name in ['thm', 'cor', 'lemma', 'def'] {
-			html += '<div class="environment-title">${t}</div>'
+	mut html := ''
+
+	if env.env_name == 'fold' {
+		html += '<details>'
+		if t := env.title {
+			html += '<summary>${t}</summary>'
+		}
+	} else {
+		html += '<div class="environment environment-${env.env_name}">'
+		if t := env.title {
+			if env.env_name in ['thm', 'cor', 'lemma', 'def'] {
+				html += '<div class="environment-title">${t}</div>'
+			}
 		}
 	}
-	html += '<div class="environment-content">'
+
 	for n in env.content {
 		html += renderer.render_node(n)
 	}
-	html += '</div></div>'
+
+	if env.env_name == 'fold' {
+		html += '</details>'
+	} else {
+		html += '</div>'
+	}
 	return html
 }
 
