@@ -37,7 +37,7 @@ pub fn (f MathDisplayFeature) parse_inline(tokens []Token, position int, reg &Re
 }
 
 pub fn (f MathDisplayFeature) render(node Node, renderer HTMLRenderer) string {
-	return '<div class="math-display">${(node as MathDisplayNode).content}</div>'
+	return '<code class="math-display">${(node as MathDisplayNode).content}</code>'
 }
 
 fn scan_math_block(tokens []Token, position int) ?(string, int) {

@@ -53,5 +53,5 @@ pub fn (f MathInlineFeature) parse_inline(tokens []Token, position int, reg &Reg
 }
 
 pub fn (f MathInlineFeature) render(node Node, renderer HTMLRenderer) string {
-	return '<span class="math-inline">${(node as MathInlineNode).content}</span>'
+	return '<code class="math-inline">${(node as MathInlineNode).content}</code>'
 }
