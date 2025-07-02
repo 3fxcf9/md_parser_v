@@ -69,7 +69,7 @@ fn main() {
 	println(output)
 }
 
-fn md_to_html(md string) string {
+pub fn md_to_html(md string) string {
 	registry := build_registry()
 
 	mut parse := Parser.new(registry)
