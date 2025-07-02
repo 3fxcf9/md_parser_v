@@ -1,4 +1,4 @@
-module main
+module md_parser
 
 import os
 import lexer { tokenize }
