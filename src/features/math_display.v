@@ -18,17 +18,30 @@ pub fn (f MathDisplayFeature) node_name() string {
 }
 
 pub fn (f MathDisplayFeature) paragraph_stop_condition(tokens []Token, position int) ?bool {
-	return position + 1 < tokens.len && tokens[position].kind == .dollar
-		&& tokens[position + 1].kind == .dollar
+	return scan_math_block(tokens, position) != none
 }
 
 pub fn (f MathDisplayFeature) parse_block(tokens []Token, position int, reg &Registry) ?(Node, int) {
-	mut start := position
-
-	// Skip any leading spaces
-	for start < tokens.len && tokens[start].kind == .space {
-		start++
+	if content, consumed := scan_math_block(tokens, position) {
+		return MathDisplayNode{
+			content: content.trim_space().trim_indent()
+		}, consumed
+	} else {
+		return none
 	}
+}
+
+// No inline handling
+pub fn (f MathDisplayFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
+	return none
+}
+
+pub fn (f MathDisplayFeature) render(node Node, renderer HTMLRenderer) string {
+	return '<div class="math-display">${(node as MathDisplayNode).content}</div>'
+}
+
+fn scan_math_block(tokens []Token, position int) ?(string, int) {
+	mut start := position
 
 	// Check for opening $$
 	if start + 1 >= tokens.len {
@@ -46,20 +59,9 @@ pub fn (f MathDisplayFeature) parse_block(tokens []Token, position int, reg &Reg
 			for t in inner_tokens {
 				text += t.lit
 			}
-			return MathDisplayNode{
-				content: text.trim_space().trim_indent()
-			}, i + 2 - position
+			return text, i + 2 - position
 		}
 	}
 
 	return none
-}
-
-// No inline handling
-pub fn (f MathDisplayFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
-	return none
-}
-
-pub fn (f MathDisplayFeature) render(node Node, renderer HTMLRenderer) string {
-	return '<div class="math-display">${(node as MathDisplayNode).content}</div>'
 }

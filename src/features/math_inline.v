@@ -31,7 +31,7 @@ pub fn (f MathInlineFeature) parse_inline(tokens []Token, position int, reg &Reg
 		return none
 	}
 
-	if !(tokens[position].kind == .dollar) {
+	if tokens[position].kind != .dollar {
 		return none
 	}
 

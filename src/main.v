@@ -45,24 +45,33 @@ fn main() {
 	mut parse := Parser.new(registry)
 	mut render := HTMLRenderer.new(registry)
 
-	tokens := tokenize(input)
-	document := parse.parse(tokens)
-	output := render.render_document(document)
-
 	if debug {
 		println('\x1b[1;97mIN:\x1b[0m')
 		println(input)
+	}
+
+	tokens := tokenize(input)
+
+	if debug {
 		println('\n\n\x1b[1;97mTokens:\x1b[0m')
 
 		for t in tokens {
 			print(t)
 		}
+	}
 
+	document := parse.parse(tokens)
+
+	if debug {
 		println('\n\n\x1b[1;97mAST:\x1b[0m')
 		for n in document {
 			println(n.to_str(0))
 		}
+	}
 
+	output := render.render_document(document)
+
+	if debug {
 		println('\n\n\x1b[1;97mOUT:\x1b[0m')
 	}
 

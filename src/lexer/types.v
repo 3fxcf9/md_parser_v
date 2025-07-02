@@ -76,7 +76,7 @@ pub fn (t Token) str() string {
 			'${magenta}[UNDERSCORE]${reset}'
 		}
 		.dollar {
-			'${green}[\\$]${reset}'
+			'${green}[$]${reset}'
 		}
 		.hash {
 			'${blue}[#]${reset}'

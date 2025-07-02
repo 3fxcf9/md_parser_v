@@ -19,12 +19,32 @@ pub fn (f CodeBlockFeature) node_name() string {
 }
 
 pub fn (f CodeBlockFeature) paragraph_stop_condition(tokens []Token, position int) ?bool {
-	return position + 2 < tokens.len && tokens[position].kind == .backtick
-		&& tokens[position + 1].kind == .backtick && tokens[position + 1].kind == .backtick
+	return scan_code_block(tokens, position) != none
 }
 
 pub fn (f CodeBlockFeature) parse_block(tokens []Token, position int, reg &Registry) ?(Node, int) {
-	// Check for opening ```
+	if content, lang, consumed := scan_code_block(tokens, position) {
+		return CodeBlockNode{
+			content: content.trim_space().trim_indent()
+			lang:    lang
+		}, consumed
+	} else {
+		return none
+	}
+}
+
+// No inline handling
+pub fn (f CodeBlockFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
+	return none
+}
+
+pub fn (f CodeBlockFeature) render(node Node, renderer HTMLRenderer) string {
+	code_block_node := node as CodeBlockNode
+	lang_class := if lang := code_block_node.lang { ' class="language-${lang}"' } else { '' }
+	return '<pre><code${lang_class}>${code_block_node.content}</code></pre>'
+}
+
+fn scan_code_block(tokens []Token, position int) ?(string, ?string, int) {
 	if position + 2 >= tokens.len {
 		return none
 	}
@@ -50,23 +70,9 @@ pub fn (f CodeBlockFeature) parse_block(tokens []Token, position int, reg &Regis
 			for t in inner_tokens {
 				text += t.lit
 			}
-			return CodeBlockNode{
-				content: text.trim_space().trim_indent()
-				lang:    lang
-			}, i + 3 - position
+			return text, lang, i + 3 - position
 		}
 	}
 
 	return none
-}
-
-// No inline handling
-pub fn (f CodeBlockFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
-	return none
-}
-
-pub fn (f CodeBlockFeature) render(node Node, renderer HTMLRenderer) string {
-	code_block_node := node as CodeBlockNode
-	lang_class := if lang := code_block_node.lang { ' class="language-${lang}"' } else { '' }
-	return '<pre><code${lang_class}>${code_block_node.content}</code></pre>'
 }
