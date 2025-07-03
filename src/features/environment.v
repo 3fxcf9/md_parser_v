@@ -167,9 +167,17 @@ pub fn (f EnvironmentFeature) parse_inline(tokens []Token, position int, reg &Re
 	return none
 }
 
-pub fn (f EnvironmentFeature) render(node Node, renderer HTMLRenderer) string {
+pub fn (f EnvironmentFeature) render(node Node, renderer HTMLRenderer) string { // TODO: Blockquote
 	env := node as EnvironmentNode
 	mut html := ''
+
+	translate_shortcut := {
+		'thm': 'theorem'
+		'cor': 'corollary'
+		'rem': 'remark'
+		'def': 'definition'
+		'eg':  'example'
+	}
 
 	if env.env_name == 'fold' {
 		html += '<details>'
@@ -177,7 +185,8 @@ pub fn (f EnvironmentFeature) render(node Node, renderer HTMLRenderer) string {
 			html += '<summary>${t}</summary>'
 		}
 	} else {
-		html += '<div class="environment environment-${env.env_name}">'
+		env_name := translate_shortcut[env.env_name] or { env.env_name }
+		html += '<div class="environment environment-${env_name}">'
 		if t := env.title {
 			if env.env_name in ['thm', 'cor', 'lemma', 'def'] {
 				html += '<div class="environment-title">${t}</div>'

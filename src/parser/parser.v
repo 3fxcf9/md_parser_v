@@ -30,7 +30,7 @@ pub fn (p Parser) parse(tokens []Token) []Node {
 			start := i
 			advance: for i < tokens.len {
 				for condition in p.reg.paragraph_stop_conditions {
-					if condition(tokens, i) or { false } {
+					if condition(tokens, i) or { false } { // TODO: Check each parser instead (remove paragraph_stop_condition from each feature)
 						break advance
 					}
 				}
