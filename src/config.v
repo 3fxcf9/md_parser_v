@@ -1,4 +1,4 @@
-module main
+module md_parser
 
 import features { BoldFeature, CodeBlockFeature, CodeInlineFeature, EnvironmentFeature, Feature, FigureFeature, HRuleFeature, HeadingFeature, HighlightFeature, ImageFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
 import shared { Registry }

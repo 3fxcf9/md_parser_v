@@ -176,7 +176,7 @@ pub fn (f EnvironmentFeature) render(node Node, renderer HTMLRenderer) string { 
 			fig_content += renderer.render_node(n)
 		}
 		if caption := env.title {
-			return '<figure>${fig_content}<caption>${caption}</caption></figure>'
+			return '<figure>${fig_content}<figcaption>${caption}</figcaption></figure>'
 		}
 		return '<figure>${fig_content}</figure>'
 	}

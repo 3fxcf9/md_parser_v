@@ -18,6 +18,7 @@
         devShells.default = pkgs.mkShell {
           packages = [
             pkgs.vlang
+            pkgs.clang
             pkgs.scour
           ];
         };

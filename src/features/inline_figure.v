@@ -108,7 +108,7 @@ pub fn (f FigureFeature) render(node Node, renderer HTMLRenderer) string {
 		for child in caption {
 			caption_html += renderer.render_node(child as Node)
 		}
-		html += '<caption>${caption_html}</caption>'
+		html += '<figcaption>${caption_html}</figcaption>'
 	}
 
 	html += '</figure>'

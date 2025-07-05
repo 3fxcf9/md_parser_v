@@ -58,11 +58,15 @@ pub fn (f ImageFeature) parse_inline(tokens []Token, position int, reg &Registry
 
 	if os.file_ext(filename) == '.svg' && os.exists(filename) {
 		if optimized_svg := execute_opt('scour --quiet --strip-xml-prolog --enable-comment-stripping -i ${abs_path(filename)}') {
+			// if svg := os.read_file(filename) {
 			return ImageNode{
 				path:    none
 				content: optimized_svg.output
+				// content: svg
 			}, filename_end + 1 - position
 		}
+		dump('error')
+		dump(abs_path(filename))
 	} else {
 		return ImageNode{
 			path:    filename

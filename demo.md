@@ -3,13 +3,13 @@
 ## Basic formatting
 
 This is a paragraph with **bold**, _italic_, ++underlined++, ==highlighted==, and ~~strikethrough~~ text. This paragraph also contains inline figures.
-//@[right_nocap.svg] >//
+//@[path/to/right_nocap.svg] >//
 //@[right.svg] > fig1////@[left.svg] < fig2//
 
 You can include a block figure~:
 
 %fig Caption
-    @[image.png]
+@[image.png]
 %
 
 There is also `inline code` as well as
