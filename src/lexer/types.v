@@ -19,6 +19,7 @@ pub enum TokenKind {
 	underscore
 	dollar
 	hash
+	at
 	percent
 	tilde
 	caret
@@ -80,6 +81,9 @@ pub fn (t Token) str() string {
 		}
 		.hash {
 			'${blue}[#]${reset}'
+		}
+		.at {
+			'${blue}[@]${reset}'
 		}
 		.percent {
 			'${cyan}[%]${reset}'

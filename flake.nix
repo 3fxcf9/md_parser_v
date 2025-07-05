@@ -16,7 +16,10 @@
         pkgs = import nixpkgs {inherit system;};
       in {
         devShells.default = pkgs.mkShell {
-          packages = [pkgs.vlang];
+          packages = [
+            pkgs.vlang
+            pkgs.scour
+          ];
         };
       }
     );

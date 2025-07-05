@@ -15,6 +15,7 @@ pub fn tokenize(input string) []Token {
 		`_`:  TokenKind.underscore
 		`$`:  TokenKind.dollar
 		`#`:  TokenKind.hash
+		`@`:  TokenKind.at
 		`%`:  TokenKind.percent
 		`~`:  TokenKind.tilde
 		`^`:  TokenKind.caret
