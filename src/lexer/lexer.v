@@ -12,6 +12,7 @@ pub fn tokenize(input string) []Token {
 		`+`:  TokenKind.plus
 		`=`:  TokenKind.equal
 		`-`:  TokenKind.dash
+		`/`:  TokenKind.slash
 		`_`:  TokenKind.underscore
 		`$`:  TokenKind.dollar
 		`#`:  TokenKind.hash
@@ -21,6 +22,8 @@ pub fn tokenize(input string) []Token {
 		`^`:  TokenKind.caret
 		`:`:  TokenKind.colon
 		`\``: TokenKind.backtick
+		`<`:  TokenKind.langle
+		`>`:  TokenKind.rangle
 		`(`:  TokenKind.lparen
 		`)`:  TokenKind.rparen
 		`[`:  TokenKind.lbracket

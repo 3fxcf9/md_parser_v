@@ -1,6 +1,6 @@
 module main
 
-import features { BoldFeature, CodeBlockFeature, CodeInlineFeature, EnvironmentFeature, Feature, FigureFeature, HRuleFeature, HeadingFeature, HighlightFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
+import features { BoldFeature, CodeBlockFeature, CodeInlineFeature, EnvironmentFeature, Feature, FigureFeature, HRuleFeature, HeadingFeature, HighlightFeature, ImageFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
 import shared { Registry }
 
 struct Config {
@@ -19,6 +19,7 @@ fn build_registry() Registry {
 	f << StrikethroughFeature{}
 	f << LinkFeature{}
 	f << FigureFeature{}
+	f << ImageFeature{}
 	f << MathDisplayFeature{}
 	f << MathInlineFeature{}
 	f << CodeInlineFeature{}

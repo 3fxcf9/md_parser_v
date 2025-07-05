@@ -2,7 +2,15 @@
 
 ## Basic formatting
 
-This is a paragraph with **bold**, _italic_, ++underlined++, ==highlighted==, and ~~strikethrough~~ text.
+This is a paragraph with **bold**, _italic_, ++underlined++, ==highlighted==, and ~~strikethrough~~ text. This paragraph also contains inline figures.
+//@[right_nocap.svg] >//
+//@[right.svg] > fig1////@[left.svg] < fig2//
+
+You can include a block figure~:
+
+%fig Caption
+    @[image.png]
+%
 
 There is also `inline code` as well as
 
@@ -22,20 +30,19 @@ You can create lists as you would in markdown
 
 - here is a first item
 
-  * here is a nested item
+  - here is a nested item
 
     with another paragraph
 
-  * a second nested item with a definition
+  - a second nested item with a definition
 
     %def Definition
-        Here is a definition
+    Here is a definition
     %
 
 - back to level one
 
-+ a list can only contain one bullet type
-
+* a list can only contain one bullet type
 
 ## Hrules
 
@@ -93,11 +100,10 @@ There are several content spacer styles
 
 %
 
-
 Environments can be nested
 
 %thm Level 1
-    %fold Level 2
-        Each level must be indented by 4 spaces
-    %
+%fold Level 2
+Each level must be indented by 4 spaces
+%
 %

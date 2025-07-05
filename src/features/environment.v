@@ -6,7 +6,7 @@ import shared { HTMLRenderer, Node, Registry }
 
 // TODO: Nesting
 
-const possible_env = ['thm', 'cor', 'lemma', 'def', 'rem', 'eg', 'exercise', 'fold', 'quote']
+const possible_env = ['thm', 'cor', 'lemma', 'def', 'rem', 'eg', 'exercise', 'fold', 'quote', 'fig']
 const nested_minimum_indent = 4
 
 struct EnvironmentNode {
@@ -169,6 +169,18 @@ pub fn (f EnvironmentFeature) parse_inline(tokens []Token, position int, reg &Re
 
 pub fn (f EnvironmentFeature) render(node Node, renderer HTMLRenderer) string { // TODO: Blockquote
 	env := node as EnvironmentNode
+
+	if env.env_name == 'fig' {
+		mut fig_content := ''
+		for n in env.content {
+			fig_content += renderer.render_node(n)
+		}
+		if caption := env.title {
+			return '<figure>${fig_content}<caption>${caption}</caption></figure>'
+		}
+		return '<figure>${fig_content}</figure>'
+	}
+
 	mut html := ''
 
 	translate_shortcut := {

@@ -70,6 +70,7 @@ pub fn (p Parser) parse_inlines(tokens []Token) []Node {
 		mut matched := false
 		for inline_fn in p.reg.inline_parsers {
 			node, consumed := inline_fn(tokens, i, p.reg) or { continue }
+			dump(consumed)
 			result << node
 			i += consumed
 			matched = true

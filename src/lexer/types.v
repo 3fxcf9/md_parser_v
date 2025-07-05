@@ -16,6 +16,7 @@ pub enum TokenKind {
 	plus
 	equal
 	dash
+	slash
 	underscore
 	dollar
 	hash
@@ -25,6 +26,8 @@ pub enum TokenKind {
 	caret
 	colon
 	backtick
+	langle
+	rangle
 	lparen
 	rparen
 	lbracket
@@ -73,8 +76,11 @@ pub fn (t Token) str() string {
 		.dash {
 			'${green}[-]${reset}'
 		}
+		.slash {
+			'${cyan}[/]${reset}'
+		}
 		.underscore {
-			'${magenta}[UNDERSCORE]${reset}'
+			'${magenta}[_]${reset}'
 		}
 		.dollar {
 			'${green}[$]${reset}'
@@ -99,6 +105,12 @@ pub fn (t Token) str() string {
 		}
 		.backtick {
 			'${blue}[`]${reset}'
+		}
+		.langle {
+			'${blue}[<]${reset}'
+		}
+		.rangle {
+			'${blue}[>]${reset}'
 		}
 		else {
 			'${red}[DELIM:${t.lit}]${reset}'
