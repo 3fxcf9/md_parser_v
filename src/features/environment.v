@@ -6,7 +6,8 @@ import shared { HTMLRenderer, Node, Registry }
 
 // TODO: Nesting
 
-const possible_env = ['thm', 'cor', 'lemma', 'def', 'rem', 'eg', 'exercise', 'fold', 'quote', 'fig']
+const possible_env = ['thm', 'cor', 'lemma', 'proof', 'def', 'rem', 'eg', 'exercise', 'fold', 'quote',
+	'fig']
 const nested_minimum_indent = 4
 
 struct EnvironmentNode {
@@ -167,55 +168,23 @@ pub fn (f EnvironmentFeature) parse_inline(tokens []Token, position int, reg &Re
 	return none
 }
 
-pub fn (f EnvironmentFeature) render(node Node, renderer HTMLRenderer) string { // TODO: Blockquote
+pub fn (f EnvironmentFeature) render(node Node, renderer HTMLRenderer) string {
 	env := node as EnvironmentNode
 
-	if env.env_name == 'fig' {
-		mut fig_content := ''
-		for n in env.content {
-			fig_content += renderer.render_node(n)
-		}
-		if caption := env.title {
-			return '<figure>${fig_content}<figcaption>${caption}</figcaption></figure>'
-		}
-		return '<figure>${fig_content}</figure>'
-	}
-
-	mut html := ''
-
-	translate_shortcut := {
-		'thm': 'theorem'
-		'cor': 'corollary'
-		'rem': 'remark'
-		'def': 'definition'
-		'eg':  'example'
-	}
-
-	if env.env_name == 'fold' {
-		html += '<details>'
-		if t := env.title {
-			html += '<summary>${t}</summary>'
-		}
-	} else {
-		env_name := translate_shortcut[env.env_name] or { env.env_name }
-		html += '<div class="environment environment-${env_name}">'
-		if t := env.title {
-			if env.env_name in ['thm', 'cor', 'lemma', 'def'] {
-				html += '<div class="environment-title">${t}</div>'
-			}
-		}
-	}
-
+	mut content := ''
 	for n in env.content {
-		html += renderer.render_node(n)
+		content += renderer.render_node(n)
 	}
 
-	if env.env_name == 'fold' {
-		html += '</details>'
-	} else {
-		html += '</div>'
+	// TODO: Render inline nodes in environment title
+	mut title := env.title
+
+	return match env.env_name {
+		'fig' { render_figure(env, title, content) }
+		'quote' { render_blockquote(env, title, content) }
+		'fold' { render_fold(env, title, content) }
+		else { render_normal_env(env, title, content) }
 	}
-	return html
 }
 
 // Utils
@@ -239,4 +208,44 @@ fn skip_fence_block(tokens []Token, start int) ?int {
 		pos++
 	}
 	return none // unterminated block
+}
+
+fn render_figure(env EnvironmentNode, title ?string, content string) string {
+	if caption := title {
+		return '<figure>${content}<figcaption>${caption}</figcaption></figure>'
+	}
+	return '<figure>${content}</figure>'
+}
+
+fn render_blockquote(env EnvironmentNode, title ?string, content string) string {
+	if metadata := title {
+		return '<div class="blockquote"><blockquote>${content}</blockquote><cite>${metadata}</cite></div>'
+	}
+	return '<div class="blockquote"><blockquote>${content}</blockquote></div>'
+}
+
+fn render_fold(env EnvironmentNode, title ?string, content string) string {
+	summary := title or { 'View more' }
+	return '<details>${content}<summary>${summary}</summary></details>'
+}
+
+fn render_normal_env(env EnvironmentNode, title ?string, content string) string {
+	translate_shortcut := {
+		'thm': 'theorem'
+		'cor': 'corollary'
+		'rem': 'remark'
+		'def': 'definition'
+		'eg':  'example'
+	}
+
+	env_name := translate_shortcut[env.env_name] or { env.env_name }
+
+	mut title_html := ''
+	if t := env.title {
+		if env.env_name in ['thm', 'cor', 'lemma', 'def'] {
+			title_html += '<div class="environment-title">${t}</div>'
+		}
+	}
+
+	return '<div class="environment environment-${env_name}">${title_html}${content}</div>'
 }
