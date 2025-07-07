@@ -7,7 +7,7 @@ import shared { HTMLRenderer, Node, Registry }
 // TODO: Nesting
 
 const possible_env = ['thm', 'cor', 'lemma', 'proof', 'def', 'rem', 'eg', 'exercise', 'fold', 'quote',
-	'fig']
+	'fig', 'lfig', 'rfig']
 const nested_minimum_indent = 4
 
 struct EnvironmentNode {
@@ -180,7 +180,9 @@ pub fn (f EnvironmentFeature) render(node Node, renderer HTMLRenderer) string {
 	mut title := env.title
 
 	return match env.env_name {
-		'fig' { render_figure(env, title, content) }
+		'fig' { render_figure(env, title, content, '') }
+		'lfig' { render_figure(env, title, content, 'float-left') }
+		'rfig' { render_figure(env, title, content, 'float-right') }
 		'quote' { render_blockquote(env, title, content) }
 		'fold' { render_fold(env, title, content) }
 		else { render_normal_env(env, title, content) }
@@ -210,11 +212,17 @@ fn skip_fence_block(tokens []Token, start int) ?int {
 	return none // unterminated block
 }
 
-fn render_figure(env EnvironmentNode, title ?string, content string) string {
-	if caption := title {
-		return '<figure>${content}<figcaption>${caption}</figcaption></figure>'
+fn render_figure(env EnvironmentNode, title ?string, content string, class_name string) string {
+	class_html := if !class_name.is_blank() {
+		' class="${class_name}"'
+	} else {
+		''
 	}
-	return '<figure>${content}</figure>'
+
+	if caption := title {
+		return '<figure${class_html}>${content}<figcaption>${caption}</figcaption></figure>'
+	}
+	return '<figure${class_html}>${content}</figure>'
 }
 
 fn render_blockquote(env EnvironmentNode, title ?string, content string) string {
