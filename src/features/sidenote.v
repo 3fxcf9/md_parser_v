@@ -32,6 +32,17 @@ pub fn (f SidenoteFeature) parse_block(tokens []Token, position int, reg &Regist
 }
 
 pub fn (f SidenoteFeature) parse_inline(tokens []Token, position int, reg &Registry) ?(Node, int) {
+	if position < tokens.len && tokens[position].kind == .space {
+		if node, consumed := sidenote_parser(tokens, position + 1, reg) {
+			return node, consumed + 1
+		}
+	} else if node, consumed := sidenote_parser(tokens, position, reg) {
+		return node, consumed
+	}
+	return none
+}
+
+fn sidenote_parser(tokens []Token, position int, reg &Registry) ?(Node, int) {
 	if position + 1 >= tokens.len {
 		return none
 	}
