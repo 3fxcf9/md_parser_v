@@ -4,20 +4,41 @@ import os
 import lexer { tokenize }
 import parser { Parser }
 import shared { HTMLRenderer }
+import json
 
 fn print_usage_and_exit() {
 	eprintln('Usage: parser [--debug] <file.md>')
 	exit(1)
 }
 
+pub fn parse_metadata(file []string) map[string]string {
+	mut metadata := map[string]string{}
+
+	for line in file {
+		if !line.starts_with(':') {
+			continue
+		}
+
+		key := line.all_before(' ')[1..]
+		value := line.all_after_first(' ')
+
+		metadata[key] = value
+	}
+
+	return metadata
+}
+
 fn main() {
 	mut debug := false
+	mut print_metadata := false
 	mut filename := ''
 
 	// Parse CLI args
 	for arg in os.args[1..] {
 		if arg == '--debug' {
 			debug = true
+		} else if arg == '--print-metadata' {
+			print_metadata = true
 		} else if filename == '' {
 			filename = arg
 		} else {
@@ -38,6 +59,11 @@ fn main() {
 	input := os.read_file(filename) or {
 		eprintln('Failed to read file: ${filename}')
 		return
+	}
+
+	if print_metadata {
+		metadata := parse_metadata(input.split_into_lines())
+		println(json.encode(metadata))
 	}
 
 	registry := build_registry()
@@ -78,7 +104,9 @@ fn main() {
 	println(output)
 }
 
-pub fn md_to_html(md string) string {
+pub fn md_to_html(md string) (map[string]string, string) {
+	metadata := parse_metadata(md.split_into_lines())
+
 	registry := build_registry()
 
 	mut parse := Parser.new(registry)
@@ -86,5 +114,5 @@ pub fn md_to_html(md string) string {
 
 	tokens := tokenize(md)
 	document := parse.parse(tokens)
-	return render.render_document(document)
+	return metadata, render.render_document(document)
 }
