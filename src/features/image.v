@@ -65,8 +65,6 @@ pub fn (f ImageFeature) parse_inline(tokens []Token, position int, reg &Registry
 				// content: svg
 			}, filename_end + 1 - position
 		}
-		dump('error')
-		dump(abs_path(filename))
 	} else {
 		return ImageNode{
 			path:    filename

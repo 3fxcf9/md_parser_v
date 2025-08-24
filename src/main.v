@@ -107,13 +107,9 @@ fn main() {
 }
 
 pub fn md_to_html(markdown string) (map[string]string, string) {
-	dump(markdown)
 	metadata, md := parse_metadata(markdown)
 
 	registry := build_registry()
-
-	dump(md)
-	dump(md)
 
 	mut parse := Parser.new(registry)
 	mut render := HTMLRenderer.new(registry)
