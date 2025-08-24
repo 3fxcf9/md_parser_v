@@ -11,10 +11,11 @@ fn print_usage_and_exit() {
 	exit(1)
 }
 
-pub fn parse_metadata(file []string) map[string]string {
+pub fn parse_metadata(file string) (map[string]string, string) {
 	mut metadata := map[string]string{}
+	lines := file.split_into_lines()
 
-	for line in file {
+	for line in lines {
 		if !line.starts_with(':') {
 			continue
 		}
@@ -25,7 +26,7 @@ pub fn parse_metadata(file []string) map[string]string {
 		metadata[key] = value
 	}
 
-	return metadata
+	return metadata, lines.filter(!it.starts_with(':')).join('\n')
 }
 
 fn main() {
@@ -56,13 +57,14 @@ fn main() {
 		return
 	}
 
-	input := os.read_file(filename) or {
+	mut input := os.read_file(filename) or {
 		eprintln('Failed to read file: ${filename}')
 		return
 	}
 
+	metadata, filtered := parse_metadata(input)
+
 	if print_metadata {
-		metadata := parse_metadata(input.split_into_lines())
 		println(json.encode(metadata))
 	}
 
@@ -76,7 +78,7 @@ fn main() {
 		println(input)
 	}
 
-	tokens := tokenize(input)
+	tokens := tokenize(filtered)
 
 	if debug {
 		println('\n\n\x1b[1;97mTokens:\x1b[0m')
@@ -104,10 +106,14 @@ fn main() {
 	println(output)
 }
 
-pub fn md_to_html(md string) (map[string]string, string) {
-	metadata := parse_metadata(md.split_into_lines())
+pub fn md_to_html(markdown string) (map[string]string, string) {
+	dump(markdown)
+	metadata, md := parse_metadata(markdown)
 
 	registry := build_registry()
+
+	dump(md)
+	dump(md)
 
 	mut parse := Parser.new(registry)
 	mut render := HTMLRenderer.new(registry)

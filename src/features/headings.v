@@ -77,5 +77,6 @@ fn scan_heading_block(tokens []Token, position int) ?([]Token, u8, int) {
 		}
 	}
 
-	return none
+	inner_tokens := tokens[content_start..]
+	return inner_tokens, level, tokens.len - position
 }
