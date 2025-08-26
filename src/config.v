@@ -1,6 +1,7 @@
 module md_parser
 
-import features { BoldFeature, CodeBlockFeature, CodeInlineFeature, EnvironmentFeature, Feature, HRuleFeature, HeadingFeature, HighlightFeature, ImageFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
+// module main
+import features { AnchorFeature, BoldFeature, CodeBlockFeature, CodeInlineFeature, EnvironmentFeature, Feature, HRuleFeature, HeadingFeature, HighlightFeature, ImageFeature, InternalReferenceFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
 import shared { Registry }
 
 struct Config {
@@ -17,7 +18,9 @@ fn build_registry() Registry {
 	f << UnderlineFeature{}
 	f << HighlightFeature{}
 	f << StrikethroughFeature{}
+	f << InternalReferenceFeature{} // IMPORTANT: Place before link (conflicting syntax)
 	f << LinkFeature{}
+	f << AnchorFeature{}
 	// f << FigureFeature{}
 	f << ImageFeature{}
 	f << MathDisplayFeature{}

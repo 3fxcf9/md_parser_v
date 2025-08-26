@@ -1,6 +1,5 @@
 # TODO
 
-- Rewrite parser: remove paragraph_stop_condition and use parse
 - Allow inline nodes in environment title
-- Metadata syntax (date, description, tags…)
-- References
+- Call each parser with a common context, with counters for environments (thm, def…), a list of references (including user_label + generated_label) and a call stack to keep track of the current context (useful to generate labels for anchors based on env numbering)
+- Compact list (rows) -> use grid

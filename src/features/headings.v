@@ -65,7 +65,7 @@ fn scan_heading_block(tokens []Token, position int) ?([]Token, u8, int) {
 		return none
 	}
 
-	if tokens[position + level].kind != .space {
+	if position + level >= tokens.len || tokens[position + level].kind != .space {
 		return none
 	}
 

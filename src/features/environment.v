@@ -8,7 +8,7 @@ import shared { HTMLRenderer, Node, Registry }
 
 const possible_env = ['thm', 'cor', 'lemma', 'proof', 'def', 'rem', 'eg', 'exercise', 'fold', 'quote',
 	'fig', 'lfig', 'rfig']
-const nested_minimum_indent = 4
+const nested_minimum_indent = 2
 
 struct EnvironmentNode {
 	env_name string

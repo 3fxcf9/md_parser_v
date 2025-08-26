@@ -62,7 +62,7 @@ fn scan_code_block(tokens []Token, position int) ?(string, ?string, int) {
 	}
 
 	// Look ahead for closing marks
-	for i := start + 3; i < tokens.len; i++ {
+	for i := start + 3; i + 2 < tokens.len; i++ {
 		if tokens[i].kind == .backtick && tokens[i + 1].kind == .backtick
 			&& tokens[i + 2].kind == .backtick {
 			inner_tokens := tokens[start + 3..i]
