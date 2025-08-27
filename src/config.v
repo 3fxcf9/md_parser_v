@@ -1,7 +1,7 @@
 module md_parser
 
 // module main
-import features { AnchorFeature, BoldFeature, CodeBlockFeature, CodeInlineFeature, EnvironmentFeature, Feature, HRuleFeature, HeadingFeature, HighlightFeature, ImageFeature, InternalReferenceFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
+import features { AnchorFeature, BoldFeature, CodeBlockFeature, CodeInlineFeature, CompactListFeature, CompactListFeature, EnvironmentFeature, Feature, HRuleFeature, HeadingFeature, HighlightFeature, ImageFeature, InternalReferenceFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
 import shared { Registry }
 
 struct Config {
@@ -27,10 +27,11 @@ fn build_registry() Registry {
 	f << MathInlineFeature{}
 	f << CodeInlineFeature{}
 	f << CodeBlockFeature{}
-	f << NbspFeature{}
 	f << SidenoteFeature{}
 	f << HRuleFeature{}
+	f << CompactListFeature{} // IMPORTANT: Place before nbsp AND list (conflicting syntax)
 	f << ListFeature{}
+	f << NbspFeature{}
 	f << EnvironmentFeature{}
 	// END ENABLED FEATURES
 

@@ -1,5 +1,6 @@
 module features
 
+import math
 import shared { HTMLRenderer, Node, Registry }
 import parser { Parser }
 import lexer { Token }
@@ -69,6 +70,12 @@ pub fn (f ListFeature) parse_block(tokens []Token, position int, reg &Registry) 
 		}
 	}
 
+	indent_offset := if ordered {
+		u8(math.floor(1 + math.log10(list.start))) // Number of digits
+	} else {
+		0
+	}
+
 	mut i := position
 	for i < tokens.len && is_compatible_list_item(tokens, i, open) { // for each list item
 		first_line_content, first_increment := gather_line(tokens, i)
@@ -85,7 +92,7 @@ pub fn (f ListFeature) parse_block(tokens []Token, position int, reg &Registry) 
 
 			mut line_content, increment := gather_line(tokens, i)
 			if tokens[i].kind == .indent {
-				new_indent_level := line_content[0].level - 2 // FIXME: Bug ?
+				new_indent_level := line_content[0].level - 2 - indent_offset // FIXME: Bug if the label name does not always have the same length
 				if new_indent_level <= 0 {
 					line_content.delete(0)
 				} else {
@@ -170,6 +177,9 @@ fn gather_line(tokens []Token, position int) ([]Token, int) {
 	mut i := position
 	for i < tokens.len && tokens[i].kind != .newline {
 		i++
+	}
+	if i >= tokens.len {
+		return tokens[position..i], i - position
 	}
 	return tokens[position..i + 1], i + 1 - position
 }
