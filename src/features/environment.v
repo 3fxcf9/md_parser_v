@@ -6,8 +6,8 @@ import shared { HTMLRenderer, Node, Registry }
 
 // TODO: Nesting
 
-const possible_env = ['thm', 'cor', 'lemma', 'proof', 'def', 'rem', 'eg', 'exercise', 'fold', 'quote',
-	'fig', 'lfig', 'rfig']
+const possible_env = ['thm', 'cor', 'lemma', 'proof', 'def', 'method', 'rem', 'eg', 'exercise',
+	'fold', 'quote', 'fig', 'lfig', 'rfig']
 const nested_minimum_indent = 2
 
 struct EnvironmentNode {
@@ -250,7 +250,7 @@ fn render_normal_env(env EnvironmentNode, title ?string, content string) string 
 
 	mut title_html := ''
 	if t := env.title {
-		if env.env_name in ['thm', 'cor', 'lemma', 'def'] {
+		if env.env_name in ['thm', 'cor', 'lemma', 'def', 'method'] {
 			title_html += '<div class="environment-title">${t}</div>'
 		}
 	}

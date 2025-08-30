@@ -157,5 +157,6 @@ fn is_compact_list_item(tokens []Token, position int) bool {
 	ul_li_count := []int{len: line_length, init: index + position}.count(ul_li_begin(it))
 	ol_li_count := []int{len: line_length, init: index + position}.count(ol_li_begin(it))
 
-	return ul_li_count >= 2 || ol_li_count >= 2
+	// return ul_li_count >= 2 || ol_li_count >= 2
+	return ul_li_count >= 1 || ol_li_count >= 2
 }

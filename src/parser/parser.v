@@ -1,6 +1,6 @@
 module parser
 
-import time
+// import time
 import shared { Node, Paragraph, Registry, TextNode }
 import lexer { Token }
 
@@ -17,7 +17,7 @@ pub fn (p Parser) parse(tokens []Token) []Node {
 	mut i := 0
 
 	for i < tokens.len {
-		time.sleep(10000000)
+		// time.sleep(10000000)
 		mut matched := false
 		test_block: for block_fn in p.reg.block_parsers {
 			node, consumed := block_fn(tokens, i, p.reg) or { continue test_block }
