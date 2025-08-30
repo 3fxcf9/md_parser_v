@@ -12,7 +12,7 @@ const nested_minimum_indent = 2
 
 struct EnvironmentNode {
 	env_name string
-	title    ?string
+	title    ?[]Node
 	content  []Node
 }
 
@@ -42,11 +42,12 @@ pub fn (f EnvironmentFeature) parse_block(tokens []Token, position int, reg &Reg
 	if env_name, title, normalized_tokens, consumed := scan_environment_block(tokens,
 		position)
 	{
+		title_nodes := if t := title { Parser.new(reg).parse_inlines(t) } else { none }
 		inner_nodes := Parser.new(reg).parse(normalized_tokens)
 
 		return EnvironmentNode{
 			env_name: env_name
-			title:    title
+			title:    title_nodes
 			content:  inner_nodes
 		}, consumed
 	} else {
@@ -54,7 +55,7 @@ pub fn (f EnvironmentFeature) parse_block(tokens []Token, position int, reg &Reg
 	}
 }
 
-fn scan_environment_block(tokens []Token, position int) ?(string, ?string, []Token, int) {
+fn scan_environment_block(tokens []Token, position int) ?(string, ?[]Token, []Token, int) {
 	if position + 2 >= tokens.len {
 		return none
 	}
@@ -80,7 +81,7 @@ fn scan_environment_block(tokens []Token, position int) ?(string, ?string, []Tok
 		start++
 	}
 	title := if title_tokens.len > 0 {
-		title_tokens.map(it.lit).join('')
+		title_tokens
 	} else {
 		none
 	}
@@ -171,13 +172,19 @@ pub fn (f EnvironmentFeature) parse_inline(tokens []Token, position int, reg &Re
 pub fn (f EnvironmentFeature) render(node Node, renderer HTMLRenderer) string {
 	env := node as EnvironmentNode
 
+	mut title := ?string(none)
+	if env.title != none {
+		mut title_html := ''
+		for n in env.title {
+			title_html += renderer.render_node(n)
+		}
+		title = title_html
+	}
+
 	mut content := ''
 	for n in env.content {
 		content += renderer.render_node(n)
 	}
-
-	// TODO: Render inline nodes in environment title
-	mut title := env.title
 
 	return match env.env_name {
 		'fig' { render_figure(env, title, content, '') }
@@ -249,7 +256,7 @@ fn render_normal_env(env EnvironmentNode, title ?string, content string) string 
 	env_name := translate_shortcut[env.env_name] or { env.env_name }
 
 	mut title_html := ''
-	if t := env.title {
+	if t := title {
 		if env.env_name in ['thm', 'cor', 'lemma', 'def', 'method'] {
 			title_html += '<div class="environment-title">${t}</div>'
 		}

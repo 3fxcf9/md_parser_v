@@ -12,7 +12,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 You can include a block figure~:
 
-%fig The caption
+%fig The ++caption++
   @[figures/drawing.svg]
 %
 
@@ -51,7 +51,7 @@ You can create lists as you would in markdown
 
 You can add compact lists~:
 
-~ first  ~ second  ~ thirdaa
+~ first  ~ second  ~ third
 
 and even numbered ones~:
 
@@ -103,6 +103,14 @@ There are several content spacer styles
 %def Definition
   ```
   %def Definition
+    ...
+  %
+  ```
+%
+
+%method Method
+  ```
+  %method Method
     ...
   %
   ```
