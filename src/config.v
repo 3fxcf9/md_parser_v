@@ -1,7 +1,7 @@
 module md_parser
 
 // module main
-import features { AnchorFeature, BoldFeature, CodeBlockFeature, CodeInlineFeature, CompactListFeature, CompactListFeature, EnvironmentFeature, Feature, HRuleFeature, HeadingFeature, HighlightFeature, ImageFeature, InternalReferenceFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
+import features { AnchorFeature, BoldFeature, CodeBlockFeature, CodeInlineFeature, CompactListFeature, EnvironmentFeature, Feature, HRuleFeature, HeadingFeature, HighlightFeature, ImageFeature, InternalReferenceFeature, ItalicFeature, LinkFeature, ListFeature, MathDisplayFeature, MathInlineFeature, NbspFeature, SidenoteFeature, StrikethroughFeature, UnderlineFeature }
 import shared { Registry }
 
 struct Config {
