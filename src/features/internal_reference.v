@@ -1,7 +1,7 @@
 
 module features
 
-import shared { HTMLRenderer, Node, Node, Registry }
+import shared { HTMLRenderer, Node, Registry }
 import lexer { Token }
 
 struct InternalReferenceNode {

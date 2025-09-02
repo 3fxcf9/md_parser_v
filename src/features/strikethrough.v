@@ -1,6 +1,6 @@
 module features
 
-import shared { HTMLRenderer, Node, Node, Registry }
+import shared { HTMLRenderer, Node, Registry }
 import parser { Parser }
 import lexer { Token }
 
