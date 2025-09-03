@@ -7,7 +7,7 @@ import shared { HTMLRenderer, Node, Registry }
 // TODO: Nesting
 
 const possible_env = ['thm', 'cor', 'lemma', 'proof', 'def', 'method', 'rem', 'eg', 'exercise',
-	'fold', 'quote', 'fig', 'lfig', 'rfig']
+	'fold', 'quote', 'fig', 'lfig', 'rfig', 'offprog']
 const nested_minimum_indent = 2
 
 struct EnvironmentNode {
@@ -187,6 +187,7 @@ pub fn (f EnvironmentFeature) render(node Node, renderer HTMLRenderer) string {
 	}
 
 	return match env.env_name {
+		'offprog' { render_off_program(env, content) }
 		'fig' { render_figure(env, title, content, '') }
 		'lfig' { render_figure(env, title, content, 'float-left') }
 		'rfig' { render_figure(env, title, content, 'float-right') }
@@ -217,6 +218,10 @@ fn skip_fence_block(tokens []Token, start int) ?int {
 		pos++
 	}
 	return none // unterminated block
+}
+
+fn render_off_program(env EnvironmentNode, content string) string {
+	return '<div class="off-program">${content}</div>'
 }
 
 fn render_figure(env EnvironmentNode, title ?string, content string, class_name string) string {
